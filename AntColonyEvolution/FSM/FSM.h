@@ -1,4 +1,5 @@
 #pragma once
+#include "ACS.h"
 
 #include <string>
 #include <memory>
@@ -17,6 +18,7 @@ protected:
 	const std::shared_ptr<FSM> Owner;
 	State(std::shared_ptr<FSM> Owner, const std::string Origin);
 	std::unique_ptr<State> Create(std::shared_ptr<FSM> Owner, const std::string Origin);
+	std::shared_ptr<Settings> settings;
 
 public:
 	virtual void Initialize() { };
@@ -53,6 +55,9 @@ private:
 
 	//Processed Delayed 
 	void ProcessDelayed();
+
+protected:
+	std::shared_ptr<Settings> settings;
 
 public:
 	static std::shared_ptr<FSM> Create(std::string Name, std::string Origin);

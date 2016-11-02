@@ -1,5 +1,7 @@
 #pragma once
-#include "FSM\FSM.h"
+#include "ACS.h"
+
+#include "FSM/FSM.h"
 
 class Program {
 private:
@@ -51,7 +53,6 @@ private:
 		inline const std::string GetStateName() { return std::string("Program Start State"); }
 	};
 
-	bool enableGraphics, enableNetworking, isWorker;
 
 public:
 	static void StartProgram(std::shared_ptr<FSM> MainFSM);

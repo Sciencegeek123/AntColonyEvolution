@@ -1,10 +1,14 @@
 #include "FSM.h"
 
 FSM::FSM(std::string name, std::string origin) :
-	Origin(name), Name(origin) { }
+	Origin(name), Name(origin) {
+	settings = Settings::get();
+}
 
 State::State(std::shared_ptr<FSM> _Owner, const std::string _Origin) :
-	Owner(_Owner), Origin(_Origin) { }
+	Owner(_Owner), Origin(_Origin) {
+	settings = Settings::get();
+}
 
 std::unique_ptr<State> State::Create(std::shared_ptr<FSM> Owner, const std::string Origin) {
 	return std::unique_ptr<State>(new State(Owner, Origin));

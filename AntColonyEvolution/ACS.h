@@ -1,5 +1,4 @@
 #pragma once
-
 /*
 
 	This file contains all of the hard coded flags for the programs.
@@ -8,18 +7,55 @@
 */
 
 /*########################################################
-MAIN PROGRAM FLAGS
+MAIN PROGRAM MODES
 #########################################################*/
-#define ACS_SIMULATION //Code that actually simulates input
-#define ACS_GENETICS //Code that generates new generations
-#define ACS_GRAPHICS //Code that renders a simulation
-#define ACS_NETWORK //Code that connects to a host for simulation data
-#define ACS_DATABASE //Code that connects to a database for persistant storage
-#define ACS_PRESENTATION //Code that connects to a host to display the results of the genetics
+#define ACS_DEBUG
+#define ACS_DEVELOPMENT
+//#define ACS_HOST
+//#define ACS_WORKER
+//#define ACS_DEMO
 
+/*########################################################
+MAIN PROGRAM MODES
+#########################################################*/
+/* These are the primary code sets that can be used.
+ACS_SIMULATION //Code that actually simulates input
+ACS_GENETICS //Code that generates new generations
+ACS_GRAPHICS //Code that renders a simulation
+ACS_NETWORK //Code that connects to a host for simulation data
+ACS_WEB //Code that displays information as a web page
+ACS_DATABASE //Code that connects to a database for persistant storage
+*/
+
+#ifdef ACS_DEVELOPMENT
+#define ACS_SIMULATION
+#define ACS_GENETICS
+#define ACS_GRAPHICS
+#endif
+
+#ifdef ACS_HOST
+//TBD
+#endif
+
+#ifdef ACS_HOST
+//TBD
+#endif
+
+#ifdef ACS_DEMO
+//TBD
+#endif
+
+/*########################################################
+OS FLAGS
+#########################################################*/
 #define WINDOWS
 //#define LINUX
 //#define MAC
 
-#include "Utils\Settings.h"
-#include "Utils\Time.h"
+/*########################################################
+Basic Includes
+#########################################################*/
+#include <cstdint>
+#include "Utils/Settings.h"
+#include "Utils/Typedefs.h"
+#include "Utils/Definitions.h"

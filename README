@@ -1,0 +1,76 @@
+Ant Colony Evolution
+Created by W. Craig Jones, Sam Shresha, Mahdi Judeh, Sam Fadrigalan
+
+Goal:
+    Have a colony of ants efficiently harvest food.
+
+WBS: 
+    * Get Client to generate a random simulation if given a specific flag
+        * Load some settings from the local Redis
+        * Generate a random environment
+        * Generate a random genetic string for the FF NN
+            * Make this a class in shared that implements a standard interface.
+        * Run the simulation with lots of logging.
+        * Tweak settings and optimize until a simulation takes under 1s (This may be hard, but is important due to search space size.)
+            * If the environment is 256x256, try to have the simulation last at least 65536 steps.
+
+!!! CONGRATS VERSION 0.5
+
+    * Get the Server to read the config file and push settings to Redis
+    * Get the Client to connect to Redis and load settings
+    * Get the Server to generate random a random simulation with the redis structure correct.
+        * If PG is simpler than expected, add that in now but don't waste time on it.
+    * Get the Client to pull a simulation from Redis, run it, and push the results
+    * Get the Server talking to PG if it isn't
+    * Add a flag to the server to just generate volumes of simulations
+        * This experiment will just be finding a starting point for the genetic algorithm, and testing performance
+        * Server clears the result list to the database, then fills the simulation list back up to 100 entries.
+    * Get the docker cluster working
+        * Add a flag to the clients so they stay alive and just keep trying to pull simulations.
+    * Start the server to search for the initial population
+        * Mark these in the database as an initial search of the particular AI type and version
+        * Periodically delete the data blobs from everything but the best 1000
+!!! This is the point to simplify the simulation if we aren't finding any decent ants
+    * The search space is HUGE, so give it at least 1M tries
+        * 1M tries should be under 1GB and take under 8 hours
+    * Start all of the docker clients to search for the docker population.
+        * Possibly get a web graphing tool going if someone else in the group can do it.
+        * NodeJS endpoints using restify for simplicity.
+    * Add a configuration to the server to start a new experiment with a population from the initial search
+        * Get the genetic algorithm working kinda sorta
+    * Start this and see if it works in a reasonable amount of time.
+
+!!! CONGRATS VERSION 1.0
+
+    * Add a LCS AI
+    * Add a NN with some kind of Memory
+
+!!! CONGRATS VERSION 2.0
+
+    * Start iterating on the AIs
+    * Start iterating on the graphics.
+
+Implementation:
+    Several Computational Intelligence Strategies
+    Genetic Algorithm powering the CIs
+    Distributed Computing powering the GA
+
+Experimentation:
+    How do different AIs compare?
+    How do different GAs compare?
+
+Requirements:
+    * Docker is installed and working, with the daemon docker-machine running.
+        https://docs.docker.com/engine/getstarted/step_one/#step-1-get-docker
+    * You have sufficient space for docker images. (>10GB (total guess))
+    * You have a PostgreSQL 9.6.1 database running:
+        * With the acs44 database added
+        * With settings correctly added to:
+            ./shared/config.h
+
+Compliation:
+    ./scripts/build_server
+    ./scripts/build_client
+    Maybe: ./scripts/build_test
+
+    * Docker does everything magically for you. Well not magically, just follow the scripts if you want enlightenment.

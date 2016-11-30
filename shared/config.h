@@ -15,3 +15,7 @@ Later we can make this dynamic or something else fancy.
 #define PG_DB acs44
 #define PG_USER acs44user
 #define PG_PASS LetsMakeSomeAntsDoWorkForUs
+
+//Environment Settings
+#define ENV_SIDE 256
+#define ENV_SIZE (ENV_SIDE * ENV_SIDE)

@@ -22,9 +22,10 @@ WBS:
         * If PG is simpler than expected, add that in now but don't waste time on it.
     * Get the Client to pull a simulation from Redis, run it, and push the results
     * Get the Server talking to PG if it isn't
-    * Add a flag to the server to just generate volumes of simulations
+    * Add a flag to the server to just generate many random simulations
         * This experiment will just be finding a starting point for the genetic algorithm, and testing performance
         * Server clears the result list to the database, then fills the simulation list back up to 100 entries.
+        * Should run each entity against the same 10 environment seeds.
     * Get the docker cluster working
         * Add a flag to the clients so they stay alive and just keep trying to pull simulations.
     * Start the server to search for the initial population
@@ -39,6 +40,7 @@ WBS:
     * Add a configuration to the server to start a new experiment with a population from the initial search
         * Get the genetic algorithm working kinda sorta
     * Start this and see if it works in a reasonable amount of time.
+        * Reasonable being 12 hours indicating progress.
 
 !!! CONGRATS VERSION 1.0
 

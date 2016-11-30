@@ -1,1 +1,1 @@
-void runRandomFFNNSimulation();
+void runTestSimulation();

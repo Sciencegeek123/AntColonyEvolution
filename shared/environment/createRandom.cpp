@@ -5,7 +5,7 @@
 #include "../deps/FastNoise/FastNoise.h"
 
 //STL Includes
-#include <Random>
+#include <random>
 #include <iostream>
 
 using namespace std;

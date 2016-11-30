@@ -73,7 +73,7 @@ struct Environment {
     private:
         std::array<std::shared_ptr<Tile>, ENV_SIZE> map;
     public:
-        Environment(); //Generate random Environment
+        Environment(); //Generate rfandom Environment
         Environment(unsigned int seed); //Generate Environment from seed.
 
         inline std::shared_ptr<Tile> get(const unsigned char &x, const unsigned char &y) {

@@ -1,9 +1,10 @@
 //Project Includes
 #include "../logging/logging.h"
 
-//Dep Includes
+//STL Includes
 #include <string>
 #include <array>
+#include <memory>
 
 enum InputVars
 {
@@ -141,11 +142,33 @@ enum OutputActions
     VoteResetColonyTimerB
 };
 
+enum AITypes
+{
+
+};
+
 class AI
 {
-  private:
+  protected:
+    AI(std::string &input){};
+    AI(){};
+
   public:
-    AI() { };                          //Builds random
-    AI(std::string geneticString) { }; //Builds from genetic string
-    virtual OutputActions get(std::array<unsigned char, 64> input);
+    virtual std::string getTypeName() { return std::move("BASE"); }
+    static std::shared_ptr<AI> createRandom() { return std::shared_ptr<AI>(new AI()); }
+    static std::shared_ptr<AI> createFrom(std::string &input) { return std::shared_ptr<AI>(new AI(input)); }
+    virtual OutputActions get(std::array<unsigned char, 64> input) { return OutputActions::NoOP; }
 };
+
+class Random_AI : public AI
+{
+private: 
+    Random_AI();
+  public:
+    std::string getTypeName() { return std::move("Random_AI"); }
+    static std::shared_ptr<AI> createRandom();
+    static std::shared_ptr<AI> createFrom(std::string &input);
+    OutputActions get(std::array<unsigned char, 64> input);
+};
+
+//class FFNN_AI : public AI { }

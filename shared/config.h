@@ -1,3 +1,4 @@
+#pragma once
 /*
 
 THIS FILE IS TO ONLY HAVE DEFINE STATEMENTS.

@@ -1,3 +1,5 @@
+#pragma once
+
 //Project Includes
 #include "../logging/logging.h"
 

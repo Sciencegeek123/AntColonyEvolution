@@ -35,8 +35,10 @@ Environment::Environment() : map() {
             int roll = distribution(generator);
             int height = fn.GetNoise(x,y) * 128 + 128;
 
-            if(x == 128 && y == 128) {
+            if(x == ENV_SIDE / 2 && y == ENV_SIDE / 2) {
                 map.at(x+y*ENV_SIDE) = std::shared_ptr<Tile>(new ColonyTile(height));
+            } else if(x==0 || y == 0 || x == ENV_SIDE || y == ENV_SIDE) {
+                map.at(x+y*ENV_SIDE) = std::shared_ptr<Tile>(new WallTile(255));
             } else if((roll -= TileTypeProbs[0]) <= 0) {
                 map.at(x+y*ENV_SIDE) = std::shared_ptr<Tile>(new FoodTile(height));
             } else if((roll -= TileTypeProbs[1]) <= 0) {

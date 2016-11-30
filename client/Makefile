@@ -1,6 +1,6 @@
 # Declaration of variables
 CC = g++
-CC_FLAGS = -w -std=c++14
+CC_FLAGS = -w -std=c++14 -g
 OBJ_DIR = ./obj/
 
 # File names
@@ -20,3 +20,6 @@ $(EXEC): $(OBJECTS)
 # To remove generated files
 clean:
 	rm -f $(EXEC) $(OBJECTS)
+
+.PHONY : all
+all : $(EXEC)

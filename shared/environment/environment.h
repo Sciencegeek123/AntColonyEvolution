@@ -6,6 +6,8 @@
 #include <array>
 #include <vector>
 #include <memory>
+#include <iostream>
+#include <iomanip>
 
 //Declarations
 class Ant;
@@ -23,12 +25,23 @@ enum TileType {
     Null = 0
 };
 
+const int TileTypeProbs[5] = {
+    1, //Food
+    3, //Plant
+    5, //Sand
+    1, //Trap
+    90 //Grass
+};
+
 struct Tile {
+    private:
+        unsigned char height;
+    
     public:
         //Construction and data
         Tile(TileType t, unsigned char h) : type(t), height(h) { };
         const TileType type;
-        const unsigned char height;
+        unsigned char getHeight() { return height; }
 
         const std::vector<Ant*> getAnts();
 
@@ -38,6 +51,7 @@ struct Tile {
         //Generic Actions
         bool MoveTo(Ant&, Simulation&);
         bool MoveFrom(Ant&, Simulation&);
+        bool Idle(Ant&, Simulation&);
         bool ReleaseSmallScentA(Ant&, Simulation&);
         bool ReleaseLargeScentA(Ant&, Simulation&);
         bool ReleaseSmallScentB(Ant&, Simulation&);
@@ -57,46 +71,72 @@ struct Tile {
 
 struct Environment {
     private:
-        std::array<std::unique_ptr<Tile>, ENV_SIZE> map;
+        std::array<std::shared_ptr<Tile>, ENV_SIZE> map;
     public:
         Environment(); //Generate random Environment
         Environment(unsigned int seed); //Generate Environment from seed.
 
-        inline Tile* get(const unsigned char &x, const unsigned char &y) {
-            return map.at(x+y*ENV_SIDE).get();
+        inline std::shared_ptr<Tile> get(const unsigned char &x, const unsigned char &y) {
+            return map.at(x+y*ENV_SIDE);
         }
 
-        void Print() { };
+        void Print() { 
+            for(int x = 0; x < ENV_SIDE; x++) {
+                for(int y = 0; y < ENV_SIDE; y++) {
+                    std::cout << std::setw(3) << (int)this->get(x,y)->type << ',';
+                }
+                std::cout << '\n';
+            }
+
+            std::cout << std::endl << std::endl << std::endl;
+
+            for(int x = 0; x < ENV_SIDE; x++) {
+                for(int y = 0; y < ENV_SIDE; y++) {
+                    std::cout << std::setw(3) << (int)this->get(x,y)->getHeight() << ',';
+                }
+                std::cout << '\n';
+            }
+
+            std::cout << std::endl << std::endl << std::endl;
+        };
 };
 
-struct Colony : Tile {
-
+struct ColonyTile : public Tile {
+    public:
+        ColonyTile(unsigned char h) : Tile(TileType::Colony, h) { };
 };
 
-struct Food : Tile {
-
+struct FoodTile : public Tile {
+    public:
+        FoodTile(unsigned char h) : Tile(TileType::Food, h) { };
 };
 
-struct Plant : Tile {
-
+struct PlantTile : public Tile {
+    public:
+        PlantTile(unsigned char h) : Tile(TileType::Plant, h) { };
 };
 
-struct Road : Tile {
-
+struct RoadTile : public Tile {
+    public:
+        RoadTile(unsigned char h) : Tile(TileType::Road, h) { };
 };
 
-struct Grass : Tile {
-
+struct GrassTile : public Tile {
+    public:
+        GrassTile(unsigned char h) : Tile(TileType::Grass, h) { };
 };
 
-struct Sand : Tile {
-
+struct SandTile : public Tile {
+    public:
+        SandTile(unsigned char h) : Tile(TileType::Sand, h) { };
 };
 
-struct Trap : Tile {
-
+struct TrapTile : public Tile {
+    public:
+        TrapTile(unsigned char h) : Tile(TileType::Trap, h) { };
 };
 
-struct Wall : Tile {
-    
+struct WallTile : public Tile {
+    public:
+        WallTile(unsigned char h) : Tile(TileType::Wall, h) { };
 };

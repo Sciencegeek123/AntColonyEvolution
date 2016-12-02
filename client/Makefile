@@ -1,7 +1,6 @@
 # Declaration of variables
 CC = clang++
-#-ggdb for other info
-CC_FLAGS =-std=c++14
+CC_FLAGS =-std=c++14 -I../shared/ -I./
 
 # File names
 EXEC = ./acs_client.exe
@@ -10,27 +9,46 @@ SOURCES += $(shell find ../shared/ -type f -name "*.cpp")
 OBJECTS = $(SOURCES:.cpp=.o)
 
 #This is the default target
-#Because of heavy header usage, I clean the project before building.
-#Then I build the project in parallel
-#Then I remove all the object files as they clutter my editor.
-#Then I run the executable
+#It automates part of my workflow.
 dev: 
-	echo Building ACS CLient - DEV MODE
-	echo
-	echo ************  Formatting Files ************
-	$(shell find ../ -type f -name "*.h" -exec clang-format -style=google -i {} \;)
-	$(shell find ../ -type f -name "*.cpp" -exec clang-format -style=google -i {} \;)
-	echo
-	echo ************  Cleaning Files ************
+	@echo "Building ACS CLient - DEV MODE"
+	@echo " *Dev performs some standard stuff to make my life easier."
+	@echo ""
+	@echo "************  Cleaning Files ************"
 	$(MAKE) clean
-	echo
-	echo ************  MAKING ALL IN PARALLEL ************
-	$(MAKE) all -j 8
-	echo
-	echo ************  REMOVING OBJECTS ************
+	@echo ""
+	@echo "************  MAKING ALL IN PARALLEL ************"
+	$(MAKE) all -j 12
+	@echo ""
+	@echo "************  REMOVING OBJECTS ************"
 	$(MAKE) rmobj
-	echo
-	echo ************  RUNNING EXECUTABLE TEST ************
+	@echo ""
+	@echo "************  RUNNING EXECUTABLE TEST ************"
+	$(EXEC) test1
+
+
+#This is everything that needs to happen when first starting.
+super_dev: 
+	@echo "Building ACS CLient - DEV MODE"
+	@echo " *Dev performs some standard stuff to make my life easier."
+	@echo ""
+	@echo "************  Cleaning Files ************"
+	$(MAKE) clean
+	@echo ""
+	@echo "************  Checking out submodules ************"
+	/bin/sh -c "git submodule update"
+	@echo ""
+	@echo "************  Formatting Files ************"
+	/bin/sh -c "find ../ -type f -name "*.h" -exec clang-format -style=google -i {} \;"
+	/bin/sh -c "find ../ -type f -name "*.cpp" -exec clang-format -style=google -i {} \;"
+	@echo ""
+	@echo "************  MAKING ALL IN PARALLEL ************"
+	$(MAKE) all -j 12
+	@echo ""
+	@echo "************  REMOVING OBJECTS ************"
+	$(MAKE) rmobj
+	@echo ""
+	@echo "************  RUNNING EXECUTABLE TEST ************"
 	$(EXEC) test1
 
 # Exec target

@@ -1,5 +1,5 @@
 // Project Includes
-#include "./simulation.h"
+#include "simulation/simulation.h"
 
 // Dep includes
 #include "../deps/FastNoise/FastNoise.h"

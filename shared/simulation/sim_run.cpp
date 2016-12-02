@@ -1,5 +1,5 @@
 // Project Includes
-#include "./simulation.h"
+#include "simulation/simulation.h"
 
 // Dep includes
 #include "../deps/FastNoise/FastNoise.h"
@@ -10,5 +10,9 @@
 
 void Simulation::Run(int duration) {
   do {
+    for (auto const &ant : ants) {
+      environment->EvaluateAction(ant->GetOutput(environment->GetInput(ant)),
+                                  ant);
+    }
   } while (duration-- > 0);
 }

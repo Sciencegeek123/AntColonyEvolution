@@ -23,3 +23,6 @@ Later we can make this dynamic or something else fancy.
 
 // Simulation Settings
 #define SIM_DURATION 256 * 256
+
+#define START_ANT_FOOD 1000
+#define MAX_ANT_FOOD 50000

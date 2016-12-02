@@ -1,8 +1,9 @@
 // Project Includes
-#include "./environment.h"
+#include "environment/environment.h"
+#include "utils/utils.h"
 
 // Dep includes
-#include "../deps/FastNoise/FastNoise.h"
+#include "deps/FastNoise/FastNoise.h"
 
 // STL Includes
 #include <iostream>
@@ -14,9 +15,7 @@ Environment::Environment(unsigned int seed) : map() {
 }
 
 Environment::Environment() : map() {
-  // For seeds (This should really be static but whatever.)
-  std::random_device rd;
-  this->PopulateTiles(rd());
+  this->PopulateTiles((*utils::rand::randomDevice)());
 }
 
 void Environment::PopulateTiles(int seed) {
@@ -34,9 +33,9 @@ void Environment::PopulateTiles(int seed) {
   fn.SetCellularReturnType(FastNoise::CellularReturnType::Distance2Add);
 
   // For types
-  std::default_random_engine generator;
-  generator.seed(seed);
-  std::uniform_int_distribution<int> distribution(0, 99);
+  default_random_engine generator;
+  generator.seed(seed << 2);
+  uniform_int_distribution<int> distribution(0, 99);
 
   for (int x = 0; x < ENV_SIDE; x++) {
     for (int y = 0; y < ENV_SIDE; y++) {

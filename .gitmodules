@@ -1,0 +1,3 @@
+[submodule "shared/deps/FastNoise"]
+	path = shared/deps/FastNoise
+	url = https://github.com/Auburns/FastNoise.git

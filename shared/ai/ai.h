@@ -1,8 +1,8 @@
 #pragma once
 
 // Project Includes
-#include "../logging/logging.h"
-#include "./ai_enums.h"
+#include "utils/utils.h"
+#include "ai/ai_enums.h"
 
 // STL Includes
 #include <array>
@@ -11,18 +11,15 @@
 
 class AI {
  protected:
-  AI(std::string &input){};
-  AI(){};
+  AI(std::string input);
+  std::string GeneticString;
 
  public:
-  virtual std::string getTypeName() { return std::move("BASE"); }
-  static std::shared_ptr<AI> createRandom() {
-    return std::shared_ptr<AI>(new AI());
-  }
-  static std::shared_ptr<AI> createFrom(std::string &input) {
-    return std::shared_ptr<AI>(new AI(input));
-  }
-  virtual OutputActions get(std::array<unsigned char, 64> input) {
-    return OutputActions::NoOP;
-  }
+  virtual std::string getTypeName();
+  static std::shared_ptr<AI> createRandom();
+  static std::shared_ptr<AI> createFrom(std::string &input);
+
+  virtual std::string GetGeneticString();
+
+  virtual OutputActions get(ACSData input);
 };

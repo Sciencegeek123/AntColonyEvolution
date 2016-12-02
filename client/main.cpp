@@ -1,6 +1,7 @@
 #include <cstring>
 #include <iostream>
-#include "./framework/framework.h"
+#include "tests/tests.h"
+#include "utils/utils.h"
 
 using namespace std;
 
@@ -13,8 +14,10 @@ int main(int argv, char** argc) {
   cout << "\tMahdi Judeh" << endl;
   cout << "\tSam Fadrigalan" << endl;
 
+  utils::rand::initDistribution();
+
   if (argv > 1 && strcmp(argc[1], "test1") == 0) {
-    runTestSimulation();
+    runRandomTestSimulation();
   } else {
     cout << "No recognized arguments" << endl;
   }

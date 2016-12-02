@@ -1,7 +1,9 @@
 // Project Includes
-#include "../../shared/ai/ai_random.h"
-#include "../../shared/environment/environment.h"
-#include "../../shared/simulation/simulation.h"
+#include "tests/tests.h"
+#include "ai/ai_random.h"
+#include "environment/environment.h"
+#include "simulation/simulation.h"
+#include "utils/utils.h"
 
 // STL Includes
 #include <chrono>
@@ -13,7 +15,7 @@ using namespace std::chrono;
 
 #define SIM_COUNT 50
 
-void runTestSimulation() {
+void runRandomTestSimulation() {
   high_resolution_clock myClock;
   auto start = myClock.now();
 
@@ -38,7 +40,6 @@ void runTestSimulation() {
       1000.0f;
 
   cout << endl
-       << "Took: " << time << "s for " << SIM_COUNT << " simulations." << endl;
-  cout << "Took: " << time / (double)SIM_COUNT << "ms for " << SIM_COUNT
-       << " simulations." << endl;
+       << "Took: " << time << "s for " << SIM_COUNT << " simulations." << endl
+       << "Took: " << time / (double)SIM_COUNT << "per simulation." << endl;
 }

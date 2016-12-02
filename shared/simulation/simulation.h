@@ -3,7 +3,7 @@
 // Project Includes
 #include "../ant/ant.h"
 #include "../config.h"
-#include "../logging/logging.h"
+#include "utils/utils.h"
 
 // STL Includes
 #include <array>

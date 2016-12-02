@@ -1,6 +1,6 @@
 # Declaration of variables
 CC = clang++
-CC_FLAGS =-std=c++14 -I../shared/ -I./
+CC_FLAGS =-std=c++14 -ggdb -I../shared/ -I./
 
 # File names
 EXEC = ./acs_client.exe
@@ -24,7 +24,7 @@ dev:
 	$(MAKE) rmobj
 	@echo ""
 	@echo "************  RUNNING EXECUTABLE TEST ************"
-	$(EXEC) test1
+	$(EXEC) testRandSpeed
 
 
 #This is everything that needs to happen when first starting.
@@ -49,7 +49,7 @@ super_dev:
 	$(MAKE) rmobj
 	@echo ""
 	@echo "************  RUNNING EXECUTABLE TEST ************"
-	$(EXEC) test1
+	$(EXEC) testRand1
 
 # Exec target
 $(EXEC): $(OBJECTS)

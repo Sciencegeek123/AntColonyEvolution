@@ -27,12 +27,16 @@ enum TileType {
   Null = 0
 };
 
-const int TileTypeProbs[5] = {
-    1,  // Food
-    3,  // Plant
-    5,  // Sand
-    1,  // Trap
-    90  // Grass
+// These are the thresholds.
+const int TileTypeProbs[6] = {
+    100,  // Grass
+    400,  // Plant I want plants to be able to spawn sooner, but also want a lot
+          // of grass
+    600,  // Grass
+    700,  // Sand
+    750,  // Trap
+    900,  // Food
+          // Grass
 };
 
 struct Tile {

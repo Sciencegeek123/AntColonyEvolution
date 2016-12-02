@@ -13,11 +13,13 @@
 using namespace std;
 using namespace std::chrono;
 
-#define SIM_COUNT 50
+#define SIM_COUNT 1
 
 void runRandomTestSimulation() {
   high_resolution_clock myClock;
   auto start = myClock.now();
+
+  cout << "Running test: Random Simulation Test - Speed Check" << endl;
 
   for (int i = 0; i < SIM_COUNT; i++) {
     shared_ptr<Environment> env = shared_ptr<Environment>(new Environment());
@@ -30,10 +32,8 @@ void runRandomTestSimulation() {
 
     cout << ".";
     cout.flush();
-    if ((i + 1) % 10 == 0) {
-      cout << endl;
-    }
   }
+  cout << endl;
 
   double time =
       (double)duration_cast<milliseconds>(myClock.now() - start).count() /
@@ -41,5 +41,5 @@ void runRandomTestSimulation() {
 
   cout << endl
        << "Took: " << time << "s for " << SIM_COUNT << " simulations." << endl
-       << "Took: " << time / (double)SIM_COUNT << "per simulation." << endl;
+       << "Took: " << time / (double)SIM_COUNT << "s per simulation." << endl;
 }

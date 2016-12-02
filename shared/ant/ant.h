@@ -9,6 +9,8 @@
 #include <array>
 #include <memory>
 #include <string>
+#include <list>
+#include <utility>
 
 struct ANT_GC {
  public:
@@ -41,12 +43,50 @@ struct ANT_GC {
 };
 
 class Ant {
+  friend Environment;
+
  private:
   std::shared_ptr<AI> brain;
 
+  // Alive
+  bool alive = 0;
+
+  // Position
+  std::pair<byte, byte> Pos;
+
+  // Age
+  const unsigned int creationTime = 0;
+
+  // Food
+  unsigned int food_income = 0;
+  unsigned int food_expense = 0;
+  unsigned int food_net = 0;
+  std::list<int> food_change_log;
+
+  // Timers
+  unsigned int TimerA = 0;
+  unsigned int TimerB = 0;
+
+  // Decaying Memory
+  float memory_decaying_a = 0;
+  float memory_decaying_b = 0;
+  float memory_decaying_c = 0;
+  float memory_decaying_d = 0;
+
+  // Static Memory
+  float memory_static_a = 0;
+  float memory_static_b = 0;
+  float memory_static_c = 0;
+  float memory_static_d = 0;
+
  public:
-  const std::shared_ptr<ANT_GC> GC;
-  Ant(std::shared_ptr<AI> ai);
+  Ant(std::shared_ptr<AI> ai, unsigned int startTime = 0);
+  const std::unique_ptr<ANT_GC> GC;
+  const unsigned int ID;
   OutputActions GetOutput(ACSData input);
-  ACSData GetPersonalInput();
+
+  bool trySpendFood(unsigned int food);
+  bool tryRecieveFood(unsigned int food);
+
+  ACSData GetPersonalInput(unsigned int round);
 };

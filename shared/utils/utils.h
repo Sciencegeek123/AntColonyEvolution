@@ -5,6 +5,7 @@
 #include <memory>
 #include <random>
 #include <string>
+#include <cmath>
 
 typedef unsigned char byte;
 typedef std::unique_ptr<std::array<byte, 64>> ACSData;

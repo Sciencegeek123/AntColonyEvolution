@@ -11,7 +11,7 @@ using namespace std;
 
 ACSData Environment::GetInput(const std::shared_ptr<Ant> &ant) {
   // Get the base info from the ant.
-  ACSData input = ant->GetPersonalInput();
+  ACSData input = ant->GetPersonalInput(round);
 
   // CurrentFoodMagnitude
   // ColonyFoodMagnitude

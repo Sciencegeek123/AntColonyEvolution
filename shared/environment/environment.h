@@ -24,7 +24,8 @@ struct Environment {
  public:
   Environment();                   // Generate rfandom Environment
   Environment(unsigned int seed);  // Generate Environment from seed.
-  const std::shared_ptr<ColonyTile> colony;
+  std::shared_ptr<ColonyTile> colony;
+  unsigned int round;
 
   inline std::shared_ptr<Tile> get(const byte &x, const byte &y) {
     return map.at(x + y * ENV_SIDE);

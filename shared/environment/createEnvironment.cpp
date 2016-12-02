@@ -9,13 +9,19 @@
 #include <iostream>
 
 using namespace std;
+Environment::Environment(unsigned int seed) : map() {
+    this->PopulateTiles(seed);
+}
 
 Environment::Environment() : map() {
     //For seeds (This should really be static but whatever.)
     std::random_device rd;
+    this->PopulateTiles(rd());
+}
 
+void Environment::PopulateTiles(int seed) {
     //For heights
-    FastNoise fn(rd());
+    FastNoise fn(seed);
     fn.SetNoiseType(FastNoise::NoiseType::Cellular);
     fn.SetFrequency(0.02f);
     fn.SetInterp(FastNoise::Interp::Quintic);
@@ -28,6 +34,7 @@ Environment::Environment() : map() {
 
     //For types
     std::default_random_engine generator;
+    generator.seed(seed);
     std::uniform_int_distribution<int> distribution(0,99);
 
     for(int x = 0; x < ENV_SIDE; x++) {
@@ -54,4 +61,5 @@ Environment::Environment() : map() {
             }
         }
     }
+
 }

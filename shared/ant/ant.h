@@ -11,7 +11,7 @@
 
 class Ant {
     private:
-        std::shared_ptr<Ant> myAnt;
+        std::shared_ptr<AI> brain;
     public:
         Ant(std::shared_ptr<AI> ai);
 };

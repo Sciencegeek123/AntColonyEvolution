@@ -20,3 +20,6 @@ Later we can make this dynamic or something else fancy.
 //Environment Settings
 #define ENV_SIDE 256
 #define ENV_SIZE (ENV_SIDE * ENV_SIDE)
+
+//Simulation Settings
+#define SIM_DURATION 256*256

@@ -13,6 +13,7 @@
 
 class Environment;
 class AI;
+class Ant;
 
 class Simulation {
 private:    
@@ -20,8 +21,8 @@ private:
     std::vector<std::shared_ptr<Ant>> ants;
 
 public:
-    Simulation(std::shared_ptr<Environment> e, std::shared_ptr<AI> a) {
-        environment = e;
-        ants.push_back(std::shared_ptr<Ant>(new Ant(a)));
-    }
+    Simulation(std::shared_ptr<Environment> e, std::shared_ptr<AI> a);
+
+    void Run(int duration);
+    void Report();
 };

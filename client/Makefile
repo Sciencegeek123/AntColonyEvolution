@@ -17,7 +17,11 @@ OBJECTS = $(SOURCES:.cpp=.o)
 dev: 
 	echo Building ACS CLient - DEV MODE
 	echo
-	echo ************  CLEANING FILES ************
+	echo ************  Formatting Files ************
+	$(shell find ../ -type f -name "*.h" -exec clang-format -style=google -i {} \;)
+	$(shell find ../ -type f -name "*.cpp" -exec clang-format -style=google -i {} \;)
+	echo
+	echo ************  Cleaning Files ************
 	$(MAKE) clean
 	echo
 	echo ************  MAKING ALL IN PARALLEL ************

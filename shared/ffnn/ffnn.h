@@ -2,6 +2,4 @@
 
 #include "../ai/ai.h"
 
-class FFN : AI {
-
-};
+class FFN : AI {};

@@ -1,9 +1,8 @@
-//Project Includes
+// Project Includes
 #include "./environment.h"
 
-//Dep Includes
+// Dep Includes
 
-//Generic Implementations
+// Generic Implementations
 
-
-//Specific Implementations
+// Specific Implementations

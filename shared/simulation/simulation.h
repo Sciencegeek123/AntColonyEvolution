@@ -2,7 +2,6 @@
 
 // Project Includes
 #include "../ant/ant.h"
-#include "../config.h"
 #include "utils/utils.h"
 
 // STL Includes

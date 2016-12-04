@@ -67,8 +67,7 @@ Requirements:
     * You have sufficient space for docker images. (>10GB (total guess))
     * You have a PostgreSQL 9.6.1 database running:
         * With the acs44 database added
-        * With settings correctly added to:
-            ./shared/config.h
+        * With settings correctly added to the config files.
 
 Compliation:
     ./scripts/build_server

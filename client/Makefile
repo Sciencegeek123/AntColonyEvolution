@@ -1,9 +1,9 @@
 # Declaration of variables
 CC = clang++
-CC_FLAGS =-std=c++14 -ggdb -I../shared/ -I./
+CC_FLAGS =-std=c++14 -O3 -ggdb -I../shared/ -I./
 
 # File names
-EXEC = ./acs_client.exe
+EXEC = ./acs_client
 SOURCES = $(shell find ./ -type f -name "*.cpp")
 SOURCES += $(shell find ../shared/ -type f -name "*.cpp")
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -65,6 +65,10 @@ clean:
 
 rmobj:
 	rm -f $(OBJECTS)
+
+format: clean
+	/bin/sh -c "find ../ -type f -name "*.h" -exec clang-format -style=google -i {} \;"
+	/bin/sh -c "find ../ -type f -name "*.cpp" -exec clang-format -style=google -i {} \;"
 
 .PHONY : all
 all : $(EXEC)

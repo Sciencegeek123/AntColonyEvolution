@@ -1,9 +1,8 @@
 #pragma once
 
 // Project Includes
-#include "../config.h"
-#include "utils/utils.h"
 #include "environment/tile.h"
+#include "utils/utils.h"
 
 // Dep Includes
 #include <array>
@@ -25,14 +24,14 @@ struct Environment {
   Environment();                   // Generate rfandom Environment
   Environment(unsigned int seed);  // Generate Environment from seed.
   std::shared_ptr<ColonyTile> colony;
-  unsigned int round;
+  unsigned int iteration = 0;
 
   inline std::shared_ptr<Tile> get(const byte &x, const byte &y) {
     return map.at(x + y * ENV_SIDE);
   }
 
-  ACSData GetInput(const std::shared_ptr<Ant> &ant);
-  void EvaluateAction(OutputActions oa, const std::shared_ptr<Ant> &ant){};
+  ACSData GetInput(std::shared_ptr<Ant> &ant);
+  void EvaluateAction(OutputActions oa, std::shared_ptr<Ant> &ant){};
 
   void Print();
 };

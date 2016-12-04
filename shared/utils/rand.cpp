@@ -1,23 +1,29 @@
 #include "utils/utils.h"
+#include <chrono>
+#include <climits>
 
 using namespace std;
+using namespace std::chrono;
 
-using namespace utils::rand;
+static unique_ptr<mt19937> randomEngine;
+static unique_ptr<uniform_int_distribution<int>> uniformIntDistribution;
 
-unique_ptr<random_device> utils::rand::randomDevice;
-unique_ptr<default_random_engine> utils::rand::randomEngine;
-
-void utils::rand::initDistribution() {
-  if (!randomDevice) {
-    randomDevice.reset(new random_device());
+string utils::randomString(int length) {
+  string result = string(length, '\0');
+  uniform_int_distribution<unsigned short> dist(0, 255);
+  for (int i = 0; i < length; i++) {
+    result[i] = (char)dist(*randomEngine);
   }
-
-  if (!randomEngine) {
-    randomEngine.reset(new default_random_engine());
-    randomEngine->seed((*randomDevice)());
-  }
+  return result;
 }
 
-void utils::rand::setGeneratorSeed(unsigned int seed) {
-  randomEngine->seed(seed);
+int utils::getRandomInt() {
+  if (!randomEngine) {
+    randomEngine.reset(
+        new mt19937(high_resolution_clock::now().time_since_epoch().count()));
+    uniformIntDistribution.reset(
+        new uniform_int_distribution<int>(INT_MAX, INT_MIN));
+  }
+
+  return (*uniformIntDistribution)(*randomEngine);
 }

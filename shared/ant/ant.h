@@ -7,9 +7,9 @@
 
 // STL Includes
 #include <array>
+#include <list>
 #include <memory>
 #include <string>
-#include <list>
 #include <utility>
 
 struct ANT_GC {
@@ -49,7 +49,7 @@ class Ant {
   std::shared_ptr<AI> brain;
 
   // Alive
-  bool alive = 0;
+  bool alive = true;
 
   // Position
   std::pair<byte, byte> Pos;

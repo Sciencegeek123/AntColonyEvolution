@@ -1,7 +1,6 @@
 #pragma once
 
 // Project Includes
-#include "../config.h"
 #include "utils/utils.h"
 
 // Dep Includes
@@ -10,12 +9,14 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <map>
+#include <list>
 
 // Declarations
 class Ant;
 class Simulation;
 
-enum TileType {
+enum TileType : byte {
   Colony = 255,
   Food = 127,
   Plant = 63,
@@ -39,23 +40,40 @@ const int TileTypeProbs[6] = {
           // Grass
 };
 
+enum ScentTypes : byte {
+  PersonalPassiveScent,
+  PersonalActiveScentA,
+  PersonalActiveScentB,
+  ColonyPassiveScent,
+  ColonyActiveScent,
+};
+
 struct Tile {
  private:
-  byte height;
-  std::vector<std::shared_ptr<Ant>> ants;
+  struct AntComparator
+      : public std::binary_function<std::shared_ptr<Ant>, std::shared_ptr<Ant>,
+                                    bool> {
+    bool operator()(const std::shared_ptr<Ant> &lhs,
+                    const std::shared_ptr<Ant> &rhs) const;
+  };
 
  public:
+  byte height;
+  std::vector<std::shared_ptr<Ant>> ants;
+  std::map<ScentTypes, std::map<std::shared_ptr<Ant>, float, AntComparator>>
+      scentMaps;
+
   // Construction and data
   Tile(TileType t, byte h) : type(t), height(h){};
   const TileType type;
   byte getHeight() { return height; }
 
-  const std::vector<std::shared_ptr<Ant>> getAnts();
+  // Get ants
+  byte getNumAnts() { return ants.size() > 255 ? 255 : ants.size(); }
+  std::vector<std::shared_ptr<Ant>> getAnts();
 
-  // Preparing Input
-  virtual std::array<byte, 64> LayerInput(Ant &, Simulation &) {
-    return std::array<byte, 64>();
-  };
+  // Get scents
+  byte getScent(ScentTypes type, std::shared_ptr<Ant> &ant);
 
   // Generic Actions
   bool ReleaseSmallScentA(Ant &, Simulation &);
@@ -81,6 +99,18 @@ struct Tile {
 struct ColonyTile : public Tile {
  public:
   ColonyTile(byte h) : Tile(TileType::Colony, h){};
+  byte memory_static_a = 0;
+  byte memory_static_b = 0;
+  byte memory_static_c = 0;
+  byte memory_static_d = 0;
+  unsigned int ColonyTimerA;
+  unsigned int ColonyTimerB;
+
+  // Food
+  unsigned int food_income = 0;
+  unsigned int food_expense = 0;
+  unsigned int food_net = 0;
+  std::list<int> food_change_log;
 };
 
 struct FoodTile : public Tile {

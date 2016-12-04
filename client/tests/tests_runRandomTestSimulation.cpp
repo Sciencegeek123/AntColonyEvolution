@@ -13,7 +13,7 @@
 using namespace std;
 using namespace std::chrono;
 
-#define SIM_COUNT 1
+#define SIM_COUNT 10
 
 void runRandomTestSimulation() {
   high_resolution_clock myClock;
@@ -27,7 +27,7 @@ void runRandomTestSimulation() {
     shared_ptr<Simulation> sim =
         shared_ptr<Simulation>(new Simulation(env, ai));
 
-    sim->Run(SIM_DURATION);
+    sim->Run(Settings->SIM_DURATION);
     sim->Report();
 
     cout << ".";

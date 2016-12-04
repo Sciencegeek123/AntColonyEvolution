@@ -8,8 +8,9 @@
 // STL Includes
 #include <iostream>
 #include <random>
+#include <climits>
 
-#define ENV_DEBUG true
+#define ENV_DEBUG false
 
 #if ENV_DEBUG
 #define ENV_DEBUG_IF(x) x
@@ -23,12 +24,16 @@ Environment::Environment(unsigned int seed) : map() {
 }
 
 Environment::Environment() : map() {
-  this->PopulateTiles((*utils::rand::randomDevice)());
+  this->PopulateTiles(utils::getRandomInt());
 }
 
 void Environment::PopulateTiles(int seed) {
+  mt19937 randomEngine(seed);
+  uniform_int_distribution<int> randInt(INT_MIN, INT_MAX);
+  uniform_int_distribution<int> rand4K(0, 4096);
+
   // For heights
-  FastNoise fn_height(seed);
+  FastNoise fn_height(randInt(randomEngine));
   fn_height.SetNoiseType(FastNoise::NoiseType::GradientFractal);
   fn_height.SetFrequency(0.04f);
   fn_height.SetInterp(FastNoise::Interp::Quintic);
@@ -38,7 +43,7 @@ void Environment::PopulateTiles(int seed) {
   fn_height.SetFractalGain(0.8);
 
   // For types
-  FastNoise fn_type(seed << 1);
+  FastNoise fn_type(randInt(randomEngine));
   fn_type.SetNoiseType(FastNoise::NoiseType::GradientFractal);
   fn_type.SetFrequency(0.12f);
   fn_type.SetInterp(FastNoise::Interp::Quintic);
@@ -46,8 +51,6 @@ void Environment::PopulateTiles(int seed) {
   fn_type.SetFractalOctaves(4);
   fn_type.SetFractalLacunarity(1);
   fn_type.SetFractalGain(1);
-
-  uniform_real_distribution<float> randDist(0, 1);
   ENV_DEBUG_IF(cout << endl;)
 
 #if ENV_DEBUG
@@ -100,7 +103,7 @@ void Environment::PopulateTiles(int seed) {
         map.at(x + y * ENV_SIDE).reset(new WallTile(255));
         ENV_DEBUG_IF(cout << "W");
       } else {
-        float randCont = 0.4f * randDist(*utils::rand::randomEngine);
+        float randCont = 0.4f * ((float)rand4K(randomEngine)) / 4096.0f;
         float heightCont = 0.3f * rawHeight;
         float noiseCont = 0.3f * (1.0 + fn_type.GetNoise(x, y));
 

@@ -1,8 +1,8 @@
 #pragma once
 
 // Project Includes
-#include "utils/utils.h"
 #include "ai/ai_enums.h"
+#include "utils/utils.h"
 
 // STL Includes
 #include <array>

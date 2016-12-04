@@ -10,7 +10,7 @@
 
 void Simulation::Run(int duration) {
   do {
-    for (auto const &ant : ants) {
+    for (auto &ant : ants) {
       environment->EvaluateAction(ant->GetOutput(environment->GetInput(ant)),
                                   ant);
     }

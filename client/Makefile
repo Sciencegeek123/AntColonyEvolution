@@ -1,6 +1,6 @@
 # Declaration of variables
 CC = clang++
-CC_FLAGS =-std=c++14 -O3 -ggdb -I../shared/ -I./
+CC_FLAGS =-std=c++14 -ggdb -I../shared/ -I./
 
 # File names
 EXEC = ./acs_client
@@ -18,7 +18,7 @@ dev:
 	$(MAKE) clean
 	@echo ""
 	@echo "************  MAKING ALL IN PARALLEL ************"
-	$(MAKE) all -j 12
+	$(MAKE) all -j 8 || $(MAKE) failure
 	@echo ""
 	@echo "************  REMOVING OBJECTS ************"
 	$(MAKE) rmobj
@@ -62,6 +62,14 @@ $(EXEC): $(OBJECTS)
 # To remove generated files
 clean:
 	rm -f $(EXEC) $(OBJECTS)
+
+fail_warning: 
+	@echo ""
+	@echo "************  CLEANING UP AFTER FAILURE ************"
+
+# Clean up after a failure
+failure: fail_warning clean
+	$(error Failure target called.)
 
 rmobj:
 	rm -f $(OBJECTS)

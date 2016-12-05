@@ -9,18 +9,21 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <map>
 
 class Environment;
 class AI;
 class Ant;
 
-class Simulation {
- private:
+class Simulation
+{
+private:
   std::shared_ptr<Environment> environment;
   std::vector<std::shared_ptr<Ant>> ants;
 
- public:
+public:
   Simulation(std::shared_ptr<Environment> e, std::shared_ptr<AI> a);
+  int actionCount[OutputActions::OutputActionsSize];
 
   void Run(int duration);
   void Report();

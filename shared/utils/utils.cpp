@@ -3,12 +3,15 @@
 
 using namespace std;
 
-unique_ptr<_Settings> Settings = unique_ptr<_Settings>(new _Settings());
+const _Settings Settings;
 
-ACSData utils::newACSData() {
+ACSData
+utils::newACSData()
+{
   return std::move(ACSData(new std::array<byte, 64>()));
 }
 
-_Settings::_Settings() {
+_Settings::_Settings()
+{
   // This will eventually load settings from a config file or Redis
 }

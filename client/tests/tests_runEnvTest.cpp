@@ -13,7 +13,8 @@
 using namespace std;
 using namespace std::chrono;
 
-void runEnvTest() {
-  shared_ptr<Environment> env = shared_ptr<Environment>(new Environment());
+void runEnvTest()
+{
+  unique_ptr<Environment> env = unique_ptr<Environment>(new Environment());
   env->Print();
 }

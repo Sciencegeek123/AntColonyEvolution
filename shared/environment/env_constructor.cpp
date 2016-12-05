@@ -19,15 +19,18 @@
 #endif
 
 using namespace std;
-Environment::Environment(unsigned int seed) : map() {
+Environment::Environment(unsigned int seed) : map()
+{
   this->PopulateTiles(seed);
 }
 
-Environment::Environment() : map() {
+Environment::Environment() : map()
+{
   this->PopulateTiles(utils::getRandomInt());
 }
 
-void Environment::PopulateTiles(int seed) {
+void Environment::PopulateTiles(int seed)
+{
   mt19937 randomEngine(seed);
   uniform_int_distribution<int> randInt(INT_MIN, INT_MAX);
   uniform_int_distribution<int> rand4K(0, 4096);
@@ -69,8 +72,10 @@ void Environment::PopulateTiles(int seed) {
   int fCount = 0;
 #endif
 
-  for (int x = 0; x < ENV_SIDE; x++) {
-    for (int y = 0; y < ENV_SIDE; y++) {
+  for (int x = 0; x < ENV_SIDE; x++)
+  {
+    for (int y = 0; y < ENV_SIDE; y++)
+    {
       float distance = sqrt(pow((float)(x - 128) / 128.0f, 2) +
                             pow((float)(y - 128) / 128.0f, 2)) /
                        sqrt(2);
@@ -85,34 +90,49 @@ void Environment::PopulateTiles(int seed) {
 
       unsigned char height;
 
-      if (rawHeight * 255 > 255) {
+      if (rawHeight * 255 > 255)
+      {
         height = 255;
-      } else if (rawHeight < 0) {
+      }
+      else if (rawHeight < 0)
+      {
         height = 0;
-      } else {
+      }
+      else
+      {
         height = rawHeight * 255;
       }
 
       ENV_DEBUG_IF(if (maxRawHeightCont < height) maxRawHeightCont = height;)
 
-      if (x == ENV_SIDE / 2 && y == ENV_SIDE / 2) {
-        this->colony = make_shared<ColonyTile>(height);
+      if (x == ENV_SIDE / 2 && y == ENV_SIDE / 2)
+      {
+        this->colony = new ColonyTile(height, x + y * ENV_SIDE);
         map.at(x + y * ENV_SIDE) = this->colony;
         ENV_DEBUG_IF(cout << "C";)
-      } else if (x == 0 || y == 0 || x == ENV_SIDE - 1 || y == ENV_SIDE - 1) {
-        map.at(x + y * ENV_SIDE).reset(new WallTile(255));
+      }
+      else if (x == 0 || y == 0 || x == ENV_SIDE - 1 || y == ENV_SIDE - 1)
+      {
+        map.at(x + y * ENV_SIDE) = new WallTile(255, x + y * ENV_SIDE);
         ENV_DEBUG_IF(cout << "W");
-      } else {
+      }
+      else
+      {
         float randCont = 0.4f * ((float)rand4K(randomEngine)) / 4096.0f;
         float heightCont = 0.3f * rawHeight;
         float noiseCont = 0.3f * (1.0 + fn_type.GetNoise(x, y));
 
 #if ENV_DEBUG
-        if (maxRandCont < randCont) maxRandCont = randCont;
-        if (maxHeightCont < heightCont) maxHeightCont = heightCont;
-        if (maxNoiseCont < noiseCont) noiseCont = noiseCont;
-        if (maxDistCont < distance) maxDistCont = distance;
-        if (minNoiseCont > noiseCont) minNoiseCont = noiseCont;
+        if (maxRandCont < randCont)
+          maxRandCont = randCont;
+        if (maxHeightCont < heightCont)
+          maxHeightCont = heightCont;
+        if (maxNoiseCont < noiseCont)
+          noiseCont = noiseCont;
+        if (maxDistCont < distance)
+          maxDistCont = distance;
+        if (minNoiseCont > noiseCont)
+          minNoiseCont = noiseCont;
 #endif
 
         float type = randCont + noiseCont + heightCont;
@@ -124,44 +144,57 @@ void Environment::PopulateTiles(int seed) {
 
         ENV_DEBUG_IF(if (maxTotalCont < type) maxTotalCont = type;)
 
-        if ((type - TileTypeProbs[0]) <= 0) {
-          this->map.at(x + y * ENV_SIDE).reset(new GrassTile(height));
+        if ((type - TileTypeProbs[0]) <= 0)
+        {
+          this->map.at(x + y * ENV_SIDE) = new GrassTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
             cout << "G";
             gCount++;
           })
-        } else if ((type - TileTypeProbs[1]) <= 0) {
-          this->map.at(x + y * ENV_SIDE).reset(new PlantTile(height));
+        }
+        else if ((type - TileTypeProbs[1]) <= 0)
+        {
+          this->map.at(x + y * ENV_SIDE) = new PlantTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
             cout << "P";
             pCount++;
           })
-        } else if ((type - TileTypeProbs[2]) <= 0) {
-          this->map.at(x + y * ENV_SIDE).reset(new GrassTile(height));
+        }
+        else if ((type - TileTypeProbs[2]) <= 0)
+        {
+          this->map.at(x + y * ENV_SIDE) = new GrassTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
             cout << "G";
             gCount++;
           })
-        } else if ((type - TileTypeProbs[3]) <= 0) {
-          this->map.at(x + y * ENV_SIDE).reset(new SandTile(height));
+        }
+        else if ((type - TileTypeProbs[3]) <= 0)
+        {
+          this->map.at(x + y * ENV_SIDE) = new SandTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
             cout << "S";
             sCount++;
           })
-        } else if ((type - TileTypeProbs[4]) <= 0) {
-          this->map.at(x + y * ENV_SIDE).reset(new TrapTile(height));
+        }
+        else if ((type - TileTypeProbs[4]) <= 0)
+        {
+          this->map.at(x + y * ENV_SIDE) = new TrapTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
             cout << "T";
             tCount++;
           })
-        } else if ((type - TileTypeProbs[5]) <= 0) {
-          this->map.at(x + y * ENV_SIDE).reset(new FoodTile(height));
+        }
+        else if ((type - TileTypeProbs[5]) <= 0)
+        {
+          this->map.at(x + y * ENV_SIDE) = new FoodTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
             cout << "F";
             fCount++;
           })
-        } else {
-          this->map.at(x + y * ENV_SIDE).reset(new GrassTile(height));
+        }
+        else
+        {
+          this->map.at(x + y * ENV_SIDE) = new GrassTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
             cout << "G";
             gCount++;

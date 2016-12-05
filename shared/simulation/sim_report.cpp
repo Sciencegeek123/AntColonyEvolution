@@ -8,4 +8,12 @@
 #include <iostream>
 #include <random>
 
-void Simulation::Report() {}
+using namespace std;
+
+void Simulation::Report()
+{
+    for (auto i = (int)OutputActions::NoOP; i < (int)OutputActions::OutputActionsSize; i++)
+    {
+        cout << OutputStrings[i] << " : " << actionCount[i] << endl;
+    }
+}

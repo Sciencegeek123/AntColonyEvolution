@@ -4,11 +4,12 @@
 #include <map>
 #include "tests/tests.h"
 #include "utils/utils.h"
-#include <unistd.h>
+#include <iomanip>
 
 using namespace std;
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
   set<string> validArgs;
   map<string, string> argDesc;
 
@@ -23,7 +24,8 @@ int main(int argc, char** argv) {
 
   set<string> args;
 
-  if (argc == 1) {
+  if (argc == 1)
+  {
     cout << endl;
     cout << "#########################" << endl;
     cout << "# Ant Colony Simulation #" << endl;
@@ -36,24 +38,33 @@ int main(int argc, char** argv) {
     cout << "#     Sam Fadrigalan    #" << endl;
     cout << "#########################" << endl;
     cout << endl;
-    cout << endl << "You must supply at least 1 argument." << endl;
-    cout << endl << "Valid arguments are: " << endl;
-    for (auto it = validArgs.begin(); it != validArgs.end(); it++) {
+    cout << endl
+         << "You must supply at least 1 argument." << endl;
+    cout << endl
+         << "Valid arguments are: " << endl;
+    for (auto it = validArgs.begin(); it != validArgs.end(); it++)
+    {
       cout << '\t' << *it << " : ";
       auto dit = argDesc.find(*it);
-      if (dit == argDesc.end()) {
+      if (dit == argDesc.end())
+      {
         cout << "!! Missing Description. Contact Craig." << endl;
-      } else {
+      }
+      else
+      {
         cout << dit->second << endl;
       }
     }
-    cout << endl << "Please try again with correct arguments." << endl;
+    cout << endl
+         << "Please try again with correct arguments." << endl;
     cout << "Thank you! Have a nice day!" << endl;
     exit(-1);
   }
 
-  for (int i = 1; i < argc; i++) {
-    if (validArgs.find(argv[i]) == validArgs.end()) {
+  for (int i = 1; i < argc; i++)
+  {
+    if (validArgs.find(argv[i]) == validArgs.end())
+    {
       cout << endl;
       cout << "#########################" << endl;
       cout << "# Ant Colony Simulation #" << endl;
@@ -66,19 +77,24 @@ int main(int argc, char** argv) {
       cout << "#     Sam Fadrigalan    #" << endl;
       cout << "#########################" << endl;
       cout << endl;
-      cout << endl << "Invalid argument: " << argv[i] << endl;
-      cout << endl << "Valid arguments are: " << endl;
-      for (auto it = validArgs.begin(); it != validArgs.end(); it++) {
+      cout << endl
+           << "Invalid argument: " << argv[i] << endl;
+      cout << endl
+           << "Valid arguments are: " << endl;
+      for (auto it = validArgs.begin(); it != validArgs.end(); it++)
+      {
         cout << '\t' << *it << endl;
       }
-      cout << endl << "Please try again with correct arguments." << endl;
+      cout << endl
+           << "Please try again with correct arguments." << endl;
       cout << "Thank you! Have a nice day!" << endl;
       exit(-1);
     }
     args.emplace(argv[i]);
   }
 
-  if (args.find("-s") == args.end()) {
+  if (args.find("-s") == args.end())
+  {
     cout << endl;
     cout << "#########################" << endl;
     cout << "# Ant Colony Simulation #" << endl;
@@ -91,17 +107,21 @@ int main(int argc, char** argv) {
     cout << "#     Sam Fadrigalan    #" << endl;
     cout << "#########################" << endl;
     cout << endl;
+    //utils::initRandom();
   }
 
-  if (args.find(string("testRandSpeed")) != args.end()) {
+  if (args.find(string("testRandSpeed")) != args.end())
+  {
     runRandomTestSimulation();
   }
 
-  if (args.find(string("testEnv")) != args.end()) {
+  if (args.find(string("testEnv")) != args.end())
+  {
     runEnvTest();
   }
 
-  if (args.find("-s") == args.end()) {
+  if (args.find("-s") == args.end())
+  {
     cout << "Thank you! Have a nice day!" << endl;
   }
 }

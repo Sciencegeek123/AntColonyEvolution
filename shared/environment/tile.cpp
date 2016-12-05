@@ -8,15 +8,44 @@
 
 // Specific Implementations
 
-bool Tile::AntComparator::operator()(const std::shared_ptr<Ant> &lhs,
-                                     const std::shared_ptr<Ant> &rhs) const {
-  return lhs->ID < rhs->ID;
+byte Tile::getScent(ScentTypes type, std::shared_ptr<Ant> &ant)
+{
+  switch (type)
+  {
+  case ScentTypes::ColonyActiveScent:
+    return ColonyActiveScent;
+  case ScentTypes::ColonyPassiveScent:
+    return ColonyPassiveScent;
+  case ScentTypes::PersonalPassiveScent:
+    return ant->PersonalScentPassive[position];
+  case ScentTypes::PersonalActiveScentA:
+    return ant->PersonalScentA[position];
+  case ScentTypes::PersonalActiveScentB:
+    return ant->PersonalScentB[position];
+  default:
+    return 0;
+    break;
+  }
 }
-
-byte Tile::getScent(ScentTypes type, std::shared_ptr<Ant> &ant) {
-  auto it = scentMaps.find(type);
-  if (it == scentMaps.end()) return 0;
-  auto it2 = it->second.find(ant);
-  if (it2 == it->second.end()) return 0;
-  return it2->second;
+void Tile::ReleaseSmallScentC(std::shared_ptr<Ant> &ant)
+{
+  if (ColonyActiveScent + ant->GC->SmallScent_Delta > 255)
+  {
+    ColonyActiveScent = 255;
+  }
+  else
+  {
+    ColonyActiveScent += ant->GC->SmallScent_Delta;
+  }
+}
+void Tile::ReleaseLargeScentC(std::shared_ptr<Ant> &ant)
+{
+  if (ColonyActiveScent + ant->GC->LargeScent_Delta > 255)
+  {
+    ColonyActiveScent = 255;
+  }
+  else
+  {
+    ColonyActiveScent += ant->GC->LargeScent_Delta;
+  }
 }

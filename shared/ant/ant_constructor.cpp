@@ -12,4 +12,12 @@ Ant::Ant(std::shared_ptr<AI> ai, unsigned int startTime)
 {
   brain = ai;
   food_net = Settings.ANT_START_FOOD;
+  for (int i = 0; i < ENV_SIZE; i++)
+  {
+    PersonalScentA[i] = 0;
+    PersonalScentB[i] = 0;
+    PersonalScentP[i] = 0;
+  }
+  Pos.first = 128;
+  Pos.second = 128;
 }

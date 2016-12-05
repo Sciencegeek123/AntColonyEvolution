@@ -11,6 +11,16 @@ using namespace std;
 
 ACSData Environment::GetInput(std::shared_ptr<Ant> &ant)
 {
+    //Add the colony passive scent here
+    if (colonyPassiveScent[ant->Pos.first + ant->Pos.second * ENV_SIDE] + ant->GC->SmallScent_Delta < 255)
+    {
+        colonyPassiveScent[ant->Pos.first + ant->Pos.second * ENV_SIDE] += ant->GC->SmallScent_Delta;
+    }
+    else
+    {
+        colonyPassiveScent[ant->Pos.first + ant->Pos.second * ENV_SIDE] = 255;
+    }
+
     // Get the base info from the ant.
     ACSData input = ant->GetPersonalInput(iteration);
 
@@ -148,153 +158,103 @@ ACSData Environment::GetInput(std::shared_ptr<Ant> &ant)
     }
     {
         // PersonalPassiveScentO
-        (*input)[InputVars::PersonalPassiveScentO] =
-            get(ant->Pos.first, ant->Pos.second)
-                ->getScent(ScentTypes::PersonalPassiveScent, ant);
+        (*input)[InputVars::PersonalPassiveScentO] = ant->PersonalScentP[(ant->Pos.first) + (ant->Pos.second) * ENV_SIDE];
     }
     {
         // PersonalPassiveScentPP
-        (*input)[InputVars::PersonalPassiveScentPP] =
-            get(ant->Pos.first + 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::PersonalPassiveScent, ant);
+        (*input)[InputVars::PersonalPassiveScentPP] = ant->PersonalScentP[(ant->Pos.first + 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // PersonalPassiveScentPN
-        (*input)[InputVars::PersonalPassiveScentPN] =
-            get(ant->Pos.first + 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::PersonalPassiveScent, ant);
+        (*input)[InputVars::PersonalPassiveScentPN] = ant->PersonalScentP[(ant->Pos.first + 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // PersonalPassiveScentNP
-        (*input)[InputVars::PersonalPassiveScentNP] =
-            get(ant->Pos.first - 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::PersonalPassiveScent, ant);
+        (*input)[InputVars::PersonalPassiveScentNP] = ant->PersonalScentP[(ant->Pos.first - 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // PersonalPassiveScentNN
-        (*input)[InputVars::PersonalPassiveScentNN] =
-            get(ant->Pos.first - 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::PersonalPassiveScent, ant);
+        (*input)[InputVars::PersonalPassiveScentNN] = ant->PersonalScentP[(ant->Pos.first - 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // PersonalActiveScentAO
-        (*input)[InputVars::PersonalActiveScentAO] =
-            get(ant->Pos.first, ant->Pos.second)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentAO] = ant->PersonalScentA[(ant->Pos.first) + (ant->Pos.second) * ENV_SIDE];
     }
     {
         // PersonalActiveScentAPP
-        (*input)[InputVars::PersonalActiveScentAPP] =
-            get(ant->Pos.first + 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentAPP] = ant->PersonalScentA[(ant->Pos.first + 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // PersonalActiveScentAPN
-        (*input)[InputVars::PersonalActiveScentAPN] =
-            get(ant->Pos.first + 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentAPN] = ant->PersonalScentA[(ant->Pos.first + 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // PersonalActiveScentANP
-        (*input)[InputVars::PersonalActiveScentANP] =
-            get(ant->Pos.first - 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentANP] = ant->PersonalScentA[(ant->Pos.first - 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // PersonalActiveScentANN
-        (*input)[InputVars::PersonalActiveScentANN] =
-            get(ant->Pos.first - 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentANN] = ant->PersonalScentA[(ant->Pos.first - 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // PersonalActiveScentBO
-        (*input)[InputVars::PersonalActiveScentBO] =
-            get(ant->Pos.first, ant->Pos.second)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentBO] = ant->PersonalScentB[(ant->Pos.first) + (ant->Pos.second) * ENV_SIDE];
     }
     {
         // PersonalActiveScentBPP
-        (*input)[InputVars::PersonalActiveScentBPP] =
-            get(ant->Pos.first + 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentBPP] = ant->PersonalScentB[(ant->Pos.first + 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // PersonalActiveScentBPN
-        (*input)[InputVars::PersonalActiveScentBPN] =
-            get(ant->Pos.first + 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentBPN] = ant->PersonalScentB[(ant->Pos.first + 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // PersonalActiveScentBNP
-        (*input)[InputVars::PersonalActiveScentBNP] =
-            get(ant->Pos.first - 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentBNP] = ant->PersonalScentB[(ant->Pos.first - 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // PersonalActiveScentBNN
-        (*input)[InputVars::PersonalActiveScentBNN] =
-            get(ant->Pos.first - 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::PersonalActiveScentA, ant);
+        (*input)[InputVars::PersonalActiveScentBNN] = ant->PersonalScentB[(ant->Pos.first - 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // ColonyPassiveScentO
-        (*input)[InputVars::ColonyPassiveScentO] =
-            get(ant->Pos.first, ant->Pos.second)
-                ->getScent(ScentTypes::ColonyPassiveScent, ant);
+        (*input)[InputVars::ColonyPassiveScentO] = colonyPassiveScent[(ant->Pos.first) + (ant->Pos.second) * ENV_SIDE];
     }
     {
         // ColonyPassiveScentPP
-        (*input)[InputVars::ColonyPassiveScentPP] =
-            get(ant->Pos.first + 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::ColonyPassiveScent, ant);
+        (*input)[InputVars::ColonyPassiveScentPP] = colonyPassiveScent[(ant->Pos.first + 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // ColonyPassiveScentPN
-        (*input)[InputVars::ColonyPassiveScentPN] =
-            get(ant->Pos.first + 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::ColonyPassiveScent, ant);
+        (*input)[InputVars::ColonyPassiveScentPN] = colonyPassiveScent[(ant->Pos.first + 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // ColonyPassiveScentNP
-        (*input)[InputVars::ColonyPassiveScentNP] =
-            get(ant->Pos.first - 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::ColonyPassiveScent, ant);
+        (*input)[InputVars::ColonyPassiveScentNP] = colonyPassiveScent[(ant->Pos.first - 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // ColonyPassiveScentNN
-        (*input)[InputVars::ColonyPassiveScentNN] =
-            get(ant->Pos.first - 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::ColonyPassiveScent, ant);
+        (*input)[InputVars::ColonyPassiveScentNN] = colonyPassiveScent[(ant->Pos.first - 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // ColonyActiveScentCO
-        (*input)[InputVars::ColonyActiveScentCO] =
-            get(ant->Pos.first, ant->Pos.second)
-                ->getScent(ScentTypes::ColonyActiveScent, ant);
+        (*input)[InputVars::ColonyActiveScentCO] = colonyActiveScent[(ant->Pos.first) + (ant->Pos.second) * ENV_SIDE];
     }
     {
         // ColonyActiveScentCPP
-        (*input)[InputVars::ColonyActiveScentCPP] =
-            get(ant->Pos.first + 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::ColonyActiveScent, ant);
+        (*input)[InputVars::ColonyActiveScentCPP] = colonyActiveScent[(ant->Pos.first + 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // ColonyActiveScentCPN
-        (*input)[InputVars::ColonyActiveScentCPN] =
-            get(ant->Pos.first + 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::ColonyActiveScent, ant);
+        (*input)[InputVars::ColonyActiveScentCPN] = colonyActiveScent[(ant->Pos.first + 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
     {
         // ColonyActiveScentCNP
-        (*input)[InputVars::ColonyActiveScentCNP] =
-            get(ant->Pos.first - 1, ant->Pos.second + 1)
-                ->getScent(ScentTypes::ColonyActiveScent, ant);
+        (*input)[InputVars::ColonyActiveScentCNP] = colonyActiveScent[(ant->Pos.first - 1) + (ant->Pos.second + 1) * ENV_SIDE];
     }
     {
         // ColonyActiveScentCNN
-        (*input)[InputVars::ColonyActiveScentCNN] =
-            get(ant->Pos.first - 1, ant->Pos.second - 1)
-                ->getScent(ScentTypes::ColonyActiveScent, ant);
+        (*input)[InputVars::ColonyActiveScentCNN] = colonyActiveScent[(ant->Pos.first - 1) + (ant->Pos.second - 1) * ENV_SIDE];
     }
 
     return move(input);

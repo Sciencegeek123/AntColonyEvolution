@@ -47,7 +47,7 @@ class Ant
 {
   friend Environment;
 
-private:
+public:
   // Alive
   bool alive = true;
 
@@ -76,12 +76,11 @@ private:
   float memory_static_c = 0;
   float memory_static_d = 0;
 
-public:
   std::shared_ptr<AI> brain;
 
   // Position
   std::pair<byte, byte> Pos;
-  std::array<float, ENV_SIZE> PersonalScentA, PersonalScentB, PersonalScentPassive;
+  std::array<float, ENV_SIZE> PersonalScentA, PersonalScentB, PersonalScentP;
 
   Ant(std::shared_ptr<AI> ai, unsigned int startTime = 0);
   const std::unique_ptr<ANT_GC> GC;

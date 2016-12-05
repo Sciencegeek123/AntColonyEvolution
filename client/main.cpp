@@ -19,6 +19,9 @@ int main(int argc, char **argv)
   validArgs.emplace("testRandSpeed");
   argDesc.emplace("testRandSpeed", "Tests the speed of the simulation code.");
 
+  validArgs.emplace("testFFNNSpeed");
+  argDesc.emplace("testFFNNSpeed", "Tests the speed of the simulation code.");
+
   validArgs.emplace("testEnv");
   argDesc.emplace("testEnv", "Prints a random environment for analysis.");
 
@@ -39,7 +42,7 @@ int main(int argc, char **argv)
     cout << "#########################" << endl;
     cout << endl;
     cout << endl
-         << "You must supply at least 1 argument." << endl;
+         << "You must supply 1 argument (or 1 and the -s)." << endl;
     cout << endl
          << "Valid arguments are: " << endl;
     for (auto it = validArgs.begin(); it != validArgs.end(); it++)
@@ -108,6 +111,11 @@ int main(int argc, char **argv)
     cout << "#########################" << endl;
     cout << endl;
     //utils::initRandom();
+  }
+
+  if (args.find(string("testFFNNSpeed")) != args.end())
+  {
+    runFFNNTestSimulation();
   }
 
   if (args.find(string("testRandSpeed")) != args.end())

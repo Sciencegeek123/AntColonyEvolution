@@ -1,7 +1,6 @@
 #include "ant/ant.h"
 #include "utils/utils.h"
 #include <iostream>
-#include "ai/ai_enums.h"
 
 bool Ant::EvaluateAction(OutputActions action, int iteration)
 {

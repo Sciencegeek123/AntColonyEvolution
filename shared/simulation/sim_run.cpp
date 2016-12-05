@@ -12,7 +12,7 @@ using namespace std;
 
 void Simulation::Run(int duration)
 {
-  for (int i = 0; i < 64; i++)
+  for (int i = 0; i < (int)OutputActions::OutputActionsSize; i++)
   {
     actionCount[i] = 0;
   }
@@ -21,8 +21,18 @@ void Simulation::Run(int duration)
 
   do
   {
+    for (int i = 0; i < ants.size(); i++)
+    {
+      if (!ants[i]->alive)
+      {
+        deadAnts.push_back(ants[i]);
+        ants.erase(ants.begin() + i);
+      }
+    }
+
     for (auto &ant : ants)
     {
+
       OutputActions action = ant->GetOutput(environment->GetInput(ant));
       bool success = environment->EvaluateAction(action, ant);
       if (success)
@@ -36,6 +46,8 @@ void Simulation::Run(int duration)
       else
       {
         actionCount[(int)OutputActions::FailedAction]++;
+        cout << "* Action Failed" << endl;
+        ant->registerFoodDelta(-Settings.Action_FailedActionCost);
       }
       ant->ReflectAction(action, success);
       ant->Step();
@@ -49,6 +61,7 @@ void Simulation::Run(int duration)
         cout << endl;
       cout.flush();
     }
+  } while (duration-- > 0 && ants.size() > 0);
 
-  } while (duration-- > 0);
+  cout << "Simulation ended with " << duration << " iterations left." << endl;
 }

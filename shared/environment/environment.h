@@ -19,6 +19,8 @@ struct Environment
 {
 private:
   std::array<Tile *, ENV_SIZE> map;
+  std::array<float, ENV_SIZE> colonyActiveScent;
+  std::array<float, ENV_SIZE> colonyPassiveScent;
   void PopulateTiles(int seed);
 
 public:
@@ -37,8 +39,14 @@ public:
     return map.at(P.first + P.second * ENV_SIDE);
   }
 
+  // Get scents
+  byte getColonyScent(ScentTypes type, int x, int y);
+
   ACSData GetInput(std::shared_ptr<Ant> &ant);
   bool EvaluateAction(OutputActions oa, std::shared_ptr<Ant> &ant);
+
+  void ReleaseSmallScentC(std::shared_ptr<Ant> &);
+  void ReleaseLargeScentC(std::shared_ptr<Ant> &);
 
   void Step();
 

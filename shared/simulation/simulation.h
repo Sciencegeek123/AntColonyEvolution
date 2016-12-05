@@ -19,7 +19,7 @@ class Simulation
 {
 private:
   std::shared_ptr<Environment> environment;
-  std::vector<std::shared_ptr<Ant>> ants;
+  std::vector<std::shared_ptr<Ant>> ants, deadAnts;
 
 public:
   Simulation(std::shared_ptr<Environment> e, std::shared_ptr<AI> a);

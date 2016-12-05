@@ -8,44 +8,110 @@
 
 // Specific Implementations
 
-byte Tile::getScent(ScentTypes type, std::shared_ptr<Ant> &ant)
+void FoodTile::Harvest(std::shared_ptr<Ant> &ant)
 {
-  switch (type)
-  {
-  case ScentTypes::ColonyActiveScent:
-    return ColonyActiveScent;
-  case ScentTypes::ColonyPassiveScent:
-    return ColonyPassiveScent;
-  case ScentTypes::PersonalPassiveScent:
-    return ant->PersonalScentPassive[position];
-  case ScentTypes::PersonalActiveScentA:
-    return ant->PersonalScentA[position];
-  case ScentTypes::PersonalActiveScentB:
-    return ant->PersonalScentB[position];
-  default:
-    return 0;
-    break;
-  }
+    if (foodContained > Settings.Tile_FoodTransferAmount)
+    {
+        foodContained -= Settings.Tile_FoodTransferAmount;
+        ant->registerFoodDelta(Settings.Tile_FoodTransferAmount);
+    }
+    else
+    {
+        foodContained = 0;
+        ant->registerFoodDelta(foodContained);
+    }
 }
-void Tile::ReleaseSmallScentC(std::shared_ptr<Ant> &ant)
+
+void PlantTile::Harvest(std::shared_ptr<Ant> &ant)
 {
-  if (ColonyActiveScent + ant->GC->SmallScent_Delta > 255)
-  {
-    ColonyActiveScent = 255;
-  }
-  else
-  {
-    ColonyActiveScent += ant->GC->SmallScent_Delta;
-  }
+    ant->registerFoodDelta(Settings.Tile_FoodTransferAmount);
 }
-void Tile::ReleaseLargeScentC(std::shared_ptr<Ant> &ant)
+
+// *********** STEP
+
+Tile *ColonyTile::Step()
 {
-  if (ColonyActiveScent + ant->GC->LargeScent_Delta > 255)
-  {
-    ColonyActiveScent = 255;
-  }
-  else
-  {
-    ColonyActiveScent += ant->GC->LargeScent_Delta;
-  }
+    for (auto ant : *ants)
+    {
+        ant->registerFoodDelta(-Settings.Tile_ColonyIdleCost);
+    }
+    return nullptr;
+}
+
+Tile *FoodTile::Step()
+{
+    for (auto ant : *ants)
+    {
+        ant->registerFoodDelta(-Settings.Tile_FoodIdleCost);
+    }
+
+    if (foodContained <= 0)
+    {
+        return new GrassTile(height, position);
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
+Tile *PlantTile::Step()
+{
+    for (auto ant : *ants)
+    {
+        ant->registerFoodDelta(-Settings.Tile_PlantIdleCost);
+    }
+    return nullptr;
+}
+
+Tile *RoadTile::Step()
+{
+    for (auto ant : *ants)
+    {
+        ant->registerFoodDelta(-Settings.Tile_RoadIdleCost);
+    }
+    return nullptr;
+}
+
+Tile *GrassTile::Step()
+{
+    for (auto ant : *ants)
+    {
+        ant->registerFoodDelta(-Settings.Tile_GrassIdleCost);
+    }
+    return nullptr;
+}
+
+Tile *SandTile::Step()
+{
+    for (auto ant : *ants)
+    {
+        ant->registerFoodDelta(-Settings.Tile_SandIdleCost);
+    }
+
+    if (utils::getRandomInt() % Settings.Tile_TrapProbability == 0)
+    {
+        return new TrapTile(height, position);
+    }
+    return nullptr;
+}
+
+Tile *TrapTile::Step()
+{
+    for (auto ant : *ants)
+    {
+        int delta = ant->registerFoodDelta(-Settings.Tile_TrapIdleCost);
+        hunger -= delta;
+    }
+
+    lifetime--;
+
+    if (hunger <= 0 || lifetime <= 0)
+    {
+        return new SandTile(height, position);
+    }
+    else
+    {
+        return nullptr;
+    }
 }

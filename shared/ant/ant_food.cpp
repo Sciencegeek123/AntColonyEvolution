@@ -16,6 +16,8 @@ int Ant::registerFoodDelta(int delta)
     food_expense += delta;
     *(food_change_log.rbegin()) -= delta;
     food_net -= delta;
+    cout << "* -Food: " << delta << endl;
+    return -delta;
   }
   else
   {
@@ -25,6 +27,7 @@ int Ant::registerFoodDelta(int delta)
     food_net += delta;
     *(food_change_log.rbegin()) += delta;
     food_income += delta;
+    cout << "* +Food: " << delta << endl;
     return delta;
   }
   return 0;

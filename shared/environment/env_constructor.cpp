@@ -76,6 +76,10 @@ void Environment::PopulateTiles(int seed)
   {
     for (int y = 0; y < ENV_SIDE; y++)
     {
+
+      colonyActiveScent[x + y * ENV_SIDE] = 0;
+      colonyPassiveScent[x + y * ENV_SIDE] = 0;
+
       float distance = sqrt(pow((float)(x - 128) / 128.0f, 2) +
                             pow((float)(y - 128) / 128.0f, 2)) /
                        sqrt(2);

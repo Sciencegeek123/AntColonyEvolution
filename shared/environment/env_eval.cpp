@@ -2,7 +2,6 @@
 #include "environment/environment.h"
 #include "utils/utils.h"
 #include "ant/ant.h"
-#include "ai/ai_enums.h"
 
 // STL Includes
 #include <iostream>
@@ -13,6 +12,9 @@ using namespace std;
 bool Environment::EvaluateAction(OutputActions action,
                                  std::shared_ptr<Ant> &ant)
 {
+  cout << "Iteration: " << iteration << endl;
+  cout << "* Action: " << OutputStrings[(int)action] << endl;
+
   switch (action)
   {
   case OutputActions::NoOP:
@@ -124,7 +126,7 @@ bool Environment::EvaluateAction(OutputActions action,
   {
     Tile *here = get(ant->Pos);
     int cost = here->CanHarvest(ant);
-    if (cost > 0 && ant->checkFoodDelta(-cost))
+    if (cost >= 0 && ant->checkFoodDelta(-cost))
     {
       here->Harvest(ant);
       ant->registerFoodDelta(-cost);
@@ -138,7 +140,7 @@ bool Environment::EvaluateAction(OutputActions action,
   {
     Tile *here = get(ant->Pos);
     int cost = here->CanGive(ant);
-    if (cost > 0 && ant->checkFoodDelta(-cost))
+    if (cost >= 0 && ant->checkFoodDelta(-cost))
     {
       here->Give(ant);
       ant->registerFoodDelta(-cost);
@@ -152,7 +154,7 @@ bool Environment::EvaluateAction(OutputActions action,
   {
     Tile *here = get(ant->Pos);
     int cost = here->CanTake(ant);
-    if (cost > 0 && ant->checkFoodDelta(-cost))
+    if (cost >= 0 && ant->checkFoodDelta(-cost))
     {
       here->Take(ant);
       ant->registerFoodDelta(-cost);
@@ -166,7 +168,7 @@ bool Environment::EvaluateAction(OutputActions action,
   {
     Tile *here = get(ant->Pos);
     int cost = here->CanWork(ant);
-    if (cost > 0 && ant->checkFoodDelta(-cost))
+    if (cost >= 0 && ant->checkFoodDelta(-cost))
     {
       here->Work(ant);
       ant->registerFoodDelta(-cost);
@@ -180,7 +182,7 @@ bool Environment::EvaluateAction(OutputActions action,
   {
     Tile *here = get(ant->Pos);
     int cost = here->CanCultivate(ant);
-    if (cost > 0 && ant->checkFoodDelta(-cost))
+    if (cost >= 0 && ant->checkFoodDelta(-cost))
     {
       here->Cultivate(ant);
       ant->registerFoodDelta(-cost);
@@ -194,7 +196,7 @@ bool Environment::EvaluateAction(OutputActions action,
   {
     Tile *here = get(ant->Pos);
     int cost = here->CanBuild(ant);
-    if (cost > 0 && ant->checkFoodDelta(-cost))
+    if (cost >= 0 && ant->checkFoodDelta(-cost))
     {
       here->Build(ant);
       ant->registerFoodDelta(-cost);
@@ -351,7 +353,7 @@ bool Environment::EvaluateAction(OutputActions action,
     if (!ant->checkFoodDelta(-Settings.Action_ReleaseSmallScentCost))
       return false;
     ant->registerFoodDelta(-Settings.Action_ReleaseSmallScentCost);
-    get(ant->Pos)->ReleaseSmallScentC(ant);
+    ReleaseSmallScentC(ant);
     return true;
     break;
   }
@@ -360,7 +362,7 @@ bool Environment::EvaluateAction(OutputActions action,
     if (!ant->checkFoodDelta(-Settings.Action_ReleaseLargeScentCost))
       return false;
     ant->registerFoodDelta(-Settings.Action_ReleaseLargeScentCost);
-    get(ant->Pos)->ReleaseLargeScentC(ant);
+    ReleaseLargeScentC(ant);
     return true;
     break;
   }

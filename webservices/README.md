@@ -1,14 +1,9 @@
-# Node.js Starter Overview
+# Ant Colony Evolution Database
 
-The Node.js Starter demonstrates a simple, reusable Node.js web application based on the Express framework.
-
-## Run the app locally
-
+## To run the app locally
 1. [Install Node.js][]
-2. Download and extract the starter code from the Bluemix UI
-3. cd into the app directory
-4. Run `npm install` to install the app's dependencies
-5. Run `npm start` to start the app
-6. Access the running app in a browser at http://localhost:6001
+2. Run `npm install` to install the app's dependencies
+3. To develop, run `npm run dev`. This will automatically restart the server for code changes. Use `npm start` in prod.
+4. Access the running app in a browser at http://localhost:3001
 
 [Install Node.js]: https://nodejs.org/en/download/

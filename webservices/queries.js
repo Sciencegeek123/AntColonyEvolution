@@ -1,4 +1,9 @@
 /**
+ * @Description: This file describes the different SQL queries.
+ * Export additional functions in module.exports at the bottom of the file
+ */
+
+/**
  * Inserts into Experiment Table
  * Accepts the following api string format
  *  api/create_experiment?envSide=(int)&envSize=(int)&duration=(int)&startFood=(int)&maxFood=(int)
@@ -25,7 +30,7 @@ function create_experiment(err, client, done, req, res) {
             });
 }
 /**
- * TODO: GENERATION TABLE has INTEGER[] attributes
+ * TODO: GENERATION TABLE has INTEGER[] attributes (currently only takes a single integer req.parents)
  * Inserts into Generation Table
  * Accepts the following api string format
  *  api/create_generation?expID=(int)&parents=(int)&envs=(int)&genCM=(int)
@@ -80,7 +85,7 @@ function create_entity(err, client, done, req, res) {
 /**
  * Inserts into Environment Table
  * Accepts the following api string format
- *  api/create_environment?envType=(int)&noise=(int)&frequency=(int)&interp=(int)&fType=(int)&fOctaves=(int)&fOctaves=(int)&fGain=(int)&envGen=(int)
+ *  api/create_environment?envType=(int)&noise=(int)&frequency=(int)&interp=(int)&fType=(int)&fOctaves=(int)&fLanc=(int)&fGain=(int)&envGen=(int)
  * Returns
  *  Ant_ID
  */
@@ -88,7 +93,7 @@ function create_environment(err, client, done, req, res) {
     if(err) {
         return console.error('error fetching client from pool', err);
     }
-    var reqArr = [req.query.envType, req.query.noise, req.query.frequency, req.query.interp, req.query.fType, req.query.fOctaves, req.query.fOctaves, req.query.fGain, req.query.envGen];
+    var reqArr = [req.query.envType, req.query.noise, req.query.frequency, req.query.interp, req.query.fType, req.query.fOctaves, req.query.fLanc, req.query.fGain, req.query.envGen];
     client
         .query('INSERT INTO "ACSchema"."Environment"( "Env_Type", "Noise", "Frequency", "Interp", "FractalType", "FractalOctaves", "FractalLancunarity", "FractalGain", "Env_Gen") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "Env_ID"',
             reqArr,
@@ -105,7 +110,7 @@ function create_environment(err, client, done, req, res) {
 }
 /**
  * TODO: CREATE SIMULATION TABLE IN DATABASE
- * TODO: GENERATION TABLE has INTEGER[] attributes
+ * TODO: GENERATION TABLE has INTEGER[] attributes (currently only takes a single integer req.antList)
  * Inserts into Simulation Table
  * Accepts the following api string format
  *  api/create_simulation?genID=(int)&envID=(int)&antList=(int)

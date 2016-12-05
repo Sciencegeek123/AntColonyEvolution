@@ -1,22 +1,14 @@
-/*eslint-env node*/
-
-//------------------------------------------------------------------------------
-// node.js starter application for Bluemix
-//------------------------------------------------------------------------------
-
 // This application uses express as its web server
 // for more info, see: http://expressjs.com
 var express = require('express');
+// This application uses node-postgress
+// for more info, see: https://github.com/brianc/node-postgres
 var pg = require('pg');
-
-// cfenv provides access to your Cloud Foundry environment
-// for more info, see: https://www.npmjs.com/package/cfenv
-var cfenv = require('cfenv');
 
 // create a new express server
 var app = express();
-
-//exports
+app.set('port', (process.env.PORT || 3001));
+// internal exports
 var db = require('./queries.js');
 var config = require('./config.js');
 
@@ -25,12 +17,6 @@ var config = require('./config.js');
 //and set a limit of maximum 10 idle clients
 var config = config.pg;
 var pool = new pg.Pool(config);
-
-// serve the files out of ./public as our main files
-app.use(express.static(__dirname + '/public'));
-
-// get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
 
 /**********************************************************************************************************************
                                             GET operations
@@ -108,7 +94,7 @@ app.get('/api/create_entity', function (req, res) {
 /**
  * Inserts into Environment Table
  * Accepts the following api string format
- *  api/create_environment?envType=(int)&noise=(int)&frequency=(int)&interp=(int)&fType=(int)&fOctaves=(int)&fOctaves=(int)&fGain=(int)&envGen=(int)
+ *  api/create_environment?envType=(int)&noise=(int)&frequency=(int)&interp=(int)&fType=(int)&fLanc=(int)&fOctaves=(int)&fGain=(int)&envGen=(int)
  * Returns
  *  Ant_ID
  */
@@ -137,8 +123,10 @@ app.get('/api/create_simulation', function (req, res) {
     console.error('idle client error', err.message, err.stack)
   });
 });
-app.listen(appEnv.port, '0.0.0.0', function() {
-  console.log("server starting on " + appEnv.url);
+//app.listen(appEnv.port, '0.0.0.0', function() {
+//  console.log("server starting on " + appEnv.url);
+//});
+app.listen(app.get('port'), function() {
+  console.log('Find the server at: http://localhost:' + app.get('port')); // eslint-disable-line no-console
 });
-
 // PUT

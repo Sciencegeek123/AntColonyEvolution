@@ -1,3 +1,8 @@
+/**
+ * @Description: This file declares configuration variables
+ * Export additional variables in module.exports at the bottom of the file
+ */
+// Defines pg config for DB server connection
 var pg = {
     user: 'postgres', //env var: PGUSER
     database: 'AntColony_DB', //env var: PGDATABASE

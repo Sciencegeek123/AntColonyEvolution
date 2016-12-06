@@ -38,7 +38,7 @@ void runFFNNSearch()
         {
             i++;
             cout << "!!! Found " << i << " FFNN over threshold." << endl;
-            sim->SubmitSearch();
+            utils::submitJSON(sim->GetJSON("FFNN_SEARCH"));
         }
     }
     cout << endl;

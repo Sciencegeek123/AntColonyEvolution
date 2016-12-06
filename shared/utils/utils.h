@@ -14,6 +14,9 @@ typedef unsigned char byte;
 typedef std::unique_ptr<std::array<byte, 64>> ACSData;
 
 #include "utils/enums.h"
+//deps
+#include "deps/json.hpp"
+using nlohmann::json;
 
 extern std::ostream cdebug;
 
@@ -98,4 +101,5 @@ int getRandomInt();
 void initRandom();
 ACSData newACSData();
 std::string randomString(int length);
+void submitJSON(json data);
 }

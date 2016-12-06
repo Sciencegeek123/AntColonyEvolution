@@ -4,6 +4,7 @@
 #include "ai/ai.h"
 #include "environment/environment.h"
 #include "utils/utils.h"
+#include "deps/json.hpp"
 
 // STL Includes
 #include <array>
@@ -12,6 +13,8 @@
 #include <string>
 #include <utility>
 #include <cstdio>
+
+using nlohmann::json;
 
 struct ANT_GC
 {
@@ -52,8 +55,13 @@ public:
   // Alive
   bool alive = true;
 
+  json GetJSON();
+
   // Age
   const unsigned int creationTime = 0;
+  unsigned int deathTime = 0;
+
+  std::array<uint, 65> successfulActionCount, failedActionCount;
 
   // Food
   unsigned int food_income = 0;
@@ -95,7 +103,7 @@ public:
 
   std::shared_ptr<Ant> produceOffspring(std::shared_ptr<std::set<std::shared_ptr<Ant>, AntComparator>> parents, unsigned int iteration);
 
-  void Step();
+  void Step(unsigned int iteration);
 
   ACSData GetPersonalInput(unsigned int round);
 

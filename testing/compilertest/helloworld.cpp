@@ -8,5 +8,5 @@ int main() {
   while (*id < 10) {
     (*id)++;
   }
-  cout << "Hello world!" << endl;
+  cdebug << "Hello world!" << endl;
 }

@@ -20,7 +20,7 @@ void runRandomTestSimulation()
     high_resolution_clock myClock;
     auto start = myClock.now();
 
-    cout << "Running test: Random Simulation Test - Speed Check" << endl;
+    cdebug << "Running test: Random Simulation Test - Speed Check" << endl;
 
     for (int i = 0; i < SIM_COUNT; i++)
     {
@@ -31,15 +31,15 @@ void runRandomTestSimulation()
 
         sim->Run(Settings.SIM_DURATION);
         sim->Report();
-        cout.flush();
+        cdebug.flush();
     }
-    cout << endl;
+    cdebug << endl;
 
     double time =
         (double)duration_cast<milliseconds>(myClock.now() - start).count() /
         1000.0f;
 
-    cout << endl
+    cdebug << endl
          << "Took: " << time << "s for " << SIM_COUNT << " simulations." << endl
          << "Took: " << time / (double)SIM_COUNT << "s per simulation." << endl;
 }

@@ -12,5 +12,5 @@ using namespace std;
 
 void Simulation::SubmitSearch()
 {
-  cout << "Submitting search results." << endl;
+  cdebug << "Submitting search results." << endl;
 }

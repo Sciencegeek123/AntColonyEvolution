@@ -54,7 +54,7 @@ void Environment::PopulateTiles(int seed)
   fn_type.SetFractalOctaves(4);
   fn_type.SetFractalLacunarity(1);
   fn_type.SetFractalGain(1);
-  ENV_DEBUG_IF(cout << endl;)
+  ENV_DEBUG_IF(cdebug << endl;)
 
 #if ENV_DEBUG
   float maxRandCont = 0;
@@ -113,12 +113,12 @@ void Environment::PopulateTiles(int seed)
       {
         this->colony = new ColonyTile(height, x + y * ENV_SIDE);
         map.at(x + y * ENV_SIDE) = this->colony;
-        ENV_DEBUG_IF(cout << "C";)
+        ENV_DEBUG_IF(cdebug << "C";)
       }
       else if (x == 0 || y == 0 || x == ENV_SIDE - 1 || y == ENV_SIDE - 1)
       {
         map.at(x + y * ENV_SIDE) = new WallTile(255, x + y * ENV_SIDE);
-        ENV_DEBUG_IF(cout << "W");
+        ENV_DEBUG_IF(cdebug << "W");
       }
       else
       {
@@ -152,7 +152,7 @@ void Environment::PopulateTiles(int seed)
         {
           this->map.at(x + y * ENV_SIDE) = new GrassTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
-            cout << "G";
+            cdebug << "G";
             gCount++;
           })
         }
@@ -160,7 +160,7 @@ void Environment::PopulateTiles(int seed)
         {
           this->map.at(x + y * ENV_SIDE) = new PlantTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
-            cout << "P";
+            cdebug << "P";
             pCount++;
           })
         }
@@ -168,7 +168,7 @@ void Environment::PopulateTiles(int seed)
         {
           this->map.at(x + y * ENV_SIDE) = new GrassTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
-            cout << "G";
+            cdebug << "G";
             gCount++;
           })
         }
@@ -176,7 +176,7 @@ void Environment::PopulateTiles(int seed)
         {
           this->map.at(x + y * ENV_SIDE) = new SandTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
-            cout << "S";
+            cdebug << "S";
             sCount++;
           })
         }
@@ -184,7 +184,7 @@ void Environment::PopulateTiles(int seed)
         {
           this->map.at(x + y * ENV_SIDE) = new TrapTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
-            cout << "T";
+            cdebug << "T";
             tCount++;
           })
         }
@@ -192,7 +192,7 @@ void Environment::PopulateTiles(int seed)
         {
           this->map.at(x + y * ENV_SIDE) = new FoodTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
-            cout << "F";
+            cdebug << "F";
             fCount++;
           })
         }
@@ -200,37 +200,37 @@ void Environment::PopulateTiles(int seed)
         {
           this->map.at(x + y * ENV_SIDE) = new GrassTile(height, x + y * ENV_SIDE);
           ENV_DEBUG_IF({
-            cout << "G";
+            cdebug << "G";
             gCount++;
           })
         }
       }
     }
-    ENV_DEBUG_IF(cout << endl;)
+    ENV_DEBUG_IF(cdebug << endl;)
   }
-  ENV_DEBUG_IF(cout << endl;)
+  ENV_DEBUG_IF(cdebug << endl;)
 
 #if ENV_DEBUG
-  cout << "MaxR: " << maxRandCont << endl;
-  cout << "MaxN: " << maxNoiseCont << endl;
-  cout << "MinN: " << minNoiseCont << endl;
-  cout << "MaxD: " << maxDistCont << endl;
-  cout << "MaxC: " << maxTotalCont << endl;
-  cout << "MaxH: " << maxHeightCont << endl;
-  cout << "MaxRH: " << maxRawHeightCont << endl;
+  cdebug << "MaxR: " << maxRandCont << endl;
+  cdebug << "MaxN: " << maxNoiseCont << endl;
+  cdebug << "MinN: " << minNoiseCont << endl;
+  cdebug << "MaxD: " << maxDistCont << endl;
+  cdebug << "MaxC: " << maxTotalCont << endl;
+  cdebug << "MaxH: " << maxHeightCont << endl;
+  cdebug << "MaxRH: " << maxRawHeightCont << endl;
 
-  cout << endl;
+  cdebug << endl;
 
-  cout << "gCount: " << gCount << " @ " << (float)gCount * 100 / (float)ENV_SIZE
+  cdebug << "gCount: " << gCount << " @ " << (float)gCount * 100 / (float)ENV_SIZE
        << endl;
-  cout << "pCount: " << pCount << " @ " << (float)pCount * 100 / (float)ENV_SIZE
+  cdebug << "pCount: " << pCount << " @ " << (float)pCount * 100 / (float)ENV_SIZE
        << endl;
-  cout << "sCount: " << sCount << " @ " << (float)sCount * 100 / (float)ENV_SIZE
+  cdebug << "sCount: " << sCount << " @ " << (float)sCount * 100 / (float)ENV_SIZE
        << endl;
-  cout << "tCount: " << tCount << " @ " << (float)tCount * 100 / (float)ENV_SIZE
+  cdebug << "tCount: " << tCount << " @ " << (float)tCount * 100 / (float)ENV_SIZE
        << endl;
-  cout << "fCount: " << fCount << " @ " << (float)fCount * 100 / (float)ENV_SIZE
+  cdebug << "fCount: " << fCount << " @ " << (float)fCount * 100 / (float)ENV_SIZE
        << endl;
-  cout << endl;
+  cdebug << endl;
 #endif
 }

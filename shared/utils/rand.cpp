@@ -22,12 +22,12 @@ string utils::randomString(int length)
 
 void utils::initRandom()
 {
-  cout << "Testing random number generator." << endl;
-  cout << "There is a bug in my logic or in the clib++ causing crashes." << endl;
-  cout << "Engine: " << (bool)randomEngine << endl;
-  cout << "Distri: " << (bool)uniformIntDistribution << endl;
-  cout << "Random: " << (*uniformIntDistribution)(*randomEngine) << endl;
-  cout << endl;
+  cdebug << "Testing random number generator." << endl;
+  cdebug << "There is a bug in my logic or in the clib++ causing crashes." << endl;
+  cdebug << "Engine: " << (bool)randomEngine << endl;
+  cdebug << "Distri: " << (bool)uniformIntDistribution << endl;
+  cdebug << "Random: " << (*uniformIntDistribution)(*randomEngine) << endl;
+  cdebug << endl;
 }
 
 int utils::getRandomInt()

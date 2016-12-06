@@ -13,19 +13,19 @@ using namespace std;
 void Environment::Print() {
   for (int x = 0; x < ENV_SIDE; x++) {
     for (int y = 0; y < ENV_SIDE; y++) {
-      std::cout << std::setw(3) << (int)this->get(x, y)->getHeight() << ',';
+      cdebug << std::setw(3) << (int)this->get(x, y)->getHeight() << ',';
     }
-    std::cout << '\n';
+    cdebug << '\n';
   }
 
-  std::cout << std::endl << std::endl << std::endl;
+  cdebug << std::endl << std::endl << std::endl;
 
   for (int x = 0; x < ENV_SIDE; x++) {
     for (int y = 0; y < ENV_SIDE; y++) {
-      std::cout << std::setw(3) << (int)this->get(x, y)->type << ',';
+      cdebug << std::setw(3) << (int)this->get(x, y)->type << ',';
     }
-    std::cout << '\n';
+    cdebug << '\n';
   }
 
-  std::cout << std::endl << std::endl << std::endl;
+  cdebug << std::endl << std::endl << std::endl;
 };

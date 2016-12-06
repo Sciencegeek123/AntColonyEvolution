@@ -19,7 +19,7 @@ dev:
 	$(MAKE) clean
 	@echo ""
 	@echo "************  MAKING ALL IN PARALLEL ************"
-	$(MAKE) all -j 8 || $(MAKE) failure
+	$(MAKE) all -j 4 || $(MAKE) failure
 	@echo ""
 	@echo "************  REMOVING OBJECTS ************"
 	$(MAKE) rmobj

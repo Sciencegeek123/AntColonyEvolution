@@ -32,38 +32,38 @@ int main(int argc, char **argv)
 
   if (argc == 1)
   {
-    cout << endl;
-    cout << "#########################" << endl;
-    cout << "# Ant Colony Simulation #" << endl;
-    cout << "# LSU CSC  4444 Project #" << endl;
-    cout << "#########################" << endl;
-    cout << "# Created by:           #" << endl;
-    cout << "#     W. Craig Jones    #" << endl;
-    cout << "#     Sam Shresha       #" << endl;
-    cout << "#     Mahdi Judeh       #" << endl;
-    cout << "#     Sam Fadrigalan    #" << endl;
-    cout << "#########################" << endl;
-    cout << endl;
-    cout << endl
+    cdebug << endl;
+    cdebug << "#########################" << endl;
+    cdebug << "# Ant Colony Simulation #" << endl;
+    cdebug << "# LSU CSC  4444 Project #" << endl;
+    cdebug << "#########################" << endl;
+    cdebug << "# Created by:           #" << endl;
+    cdebug << "#     W. Craig Jones    #" << endl;
+    cdebug << "#     Sam Shresha       #" << endl;
+    cdebug << "#     Mahdi Judeh       #" << endl;
+    cdebug << "#     Sam Fadrigalan    #" << endl;
+    cdebug << "#########################" << endl;
+    cdebug << endl;
+    cdebug << endl
          << "You must supply 1 argument (or 1 and the -s)." << endl;
-    cout << endl
+    cdebug << endl
          << "Valid arguments are: " << endl;
     for (auto it = validArgs.begin(); it != validArgs.end(); it++)
     {
-      cout << '\t' << *it << " : ";
+      cdebug << '\t' << *it << " : ";
       auto dit = argDesc.find(*it);
       if (dit == argDesc.end())
       {
-        cout << "!! Missing Description. Contact Craig." << endl;
+        cdebug << "!! Missing Description. Contact Craig." << endl;
       }
       else
       {
-        cout << dit->second << endl;
+        cdebug << dit->second << endl;
       }
     }
-    cout << endl
+    cdebug << endl
          << "Please try again with correct arguments." << endl;
-    cout << "Thank you! Have a nice day!" << endl;
+    cdebug << "Thank you! Have a nice day!" << endl;
     exit(-1);
   }
 
@@ -71,29 +71,29 @@ int main(int argc, char **argv)
   {
     if (validArgs.find(argv[i]) == validArgs.end())
     {
-      cout << endl;
-      cout << "#########################" << endl;
-      cout << "# Ant Colony Simulation #" << endl;
-      cout << "# LSU CSC  4444 Project #" << endl;
-      cout << "#########################" << endl;
-      cout << "# Created by:           #" << endl;
-      cout << "#     W. Craig Jones    #" << endl;
-      cout << "#     Sam Shresha       #" << endl;
-      cout << "#     Mahdi Judeh       #" << endl;
-      cout << "#     Sam Fadrigalan    #" << endl;
-      cout << "#########################" << endl;
-      cout << endl;
-      cout << endl
+      cdebug << endl;
+      cdebug << "#########################" << endl;
+      cdebug << "# Ant Colony Simulation #" << endl;
+      cdebug << "# LSU CSC  4444 Project #" << endl;
+      cdebug << "#########################" << endl;
+      cdebug << "# Created by:           #" << endl;
+      cdebug << "#     W. Craig Jones    #" << endl;
+      cdebug << "#     Sam Shresha       #" << endl;
+      cdebug << "#     Mahdi Judeh       #" << endl;
+      cdebug << "#     Sam Fadrigalan    #" << endl;
+      cdebug << "#########################" << endl;
+      cdebug << endl;
+      cdebug << endl
            << "Invalid argument: " << argv[i] << endl;
-      cout << endl
+      cdebug << endl
            << "Valid arguments are: " << endl;
       for (auto it = validArgs.begin(); it != validArgs.end(); it++)
       {
-        cout << '\t' << *it << endl;
+        cdebug << '\t' << *it << endl;
       }
-      cout << endl
+      cdebug << endl
            << "Please try again with correct arguments." << endl;
-      cout << "Thank you! Have a nice day!" << endl;
+      cdebug << "Thank you! Have a nice day!" << endl;
       exit(-1);
     }
     args.emplace(argv[i]);
@@ -101,18 +101,18 @@ int main(int argc, char **argv)
 
   if (args.find("-s") == args.end())
   {
-    cout << endl;
-    cout << "#########################" << endl;
-    cout << "# Ant Colony Simulation #" << endl;
-    cout << "# LSU CSC  4444 Project #" << endl;
-    cout << "#########################" << endl;
-    cout << "# Created by:           #" << endl;
-    cout << "#     W. Craig Jones    #" << endl;
-    cout << "#     Sam Shresha       #" << endl;
-    cout << "#     Mahdi Judeh       #" << endl;
-    cout << "#     Sam Fadrigalan    #" << endl;
-    cout << "#########################" << endl;
-    cout << endl;
+    cdebug << endl;
+    cdebug << "#########################" << endl;
+    cdebug << "# Ant Colony Simulation #" << endl;
+    cdebug << "# LSU CSC  4444 Project #" << endl;
+    cdebug << "#########################" << endl;
+    cdebug << "# Created by:           #" << endl;
+    cdebug << "#     W. Craig Jones    #" << endl;
+    cdebug << "#     Sam Shresha       #" << endl;
+    cdebug << "#     Mahdi Judeh       #" << endl;
+    cdebug << "#     Sam Fadrigalan    #" << endl;
+    cdebug << "#########################" << endl;
+    cdebug << endl;
     //utils::initRandom();
   }
 
@@ -138,6 +138,6 @@ int main(int argc, char **argv)
 
   if (args.find("-s") == args.end())
   {
-    cout << "Thank you! Have a nice day!" << endl;
+    cdebug << "Thank you! Have a nice day!" << endl;
   }
 }

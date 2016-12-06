@@ -16,19 +16,19 @@ void Simulation::Report()
     {
         cdebug << OutputStrings[i] << " : " << actionCount[i] << endl;
     }
-    cout << "CN: " << environment->colony->food_net << " It: " << environment->iteration << endl;
+    cdebug << "CN: " << environment->colony->food_net << " It: " << environment->iteration << endl;
 
     vector<json> children;
 
     for (auto a : ants)
     {
-        cout << "* ";
-        a->print(cout);
+        cdebug << "* ";
+        a->print(cdebug);
     }
 
     for (auto a : deadAnts)
     {
-        cout << "* ";
-        a->print(cout);
+        cdebug << "* ";
+        a->print(cdebug);
     }
 }

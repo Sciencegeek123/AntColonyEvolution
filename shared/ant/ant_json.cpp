@@ -12,12 +12,12 @@ json Ant::GetJSON()
     job["creationTime"] = creationTime;
     job["deathTime"] = deathTime;
 
-    string rawData;
+    //string rawData;
 
-    Base64 b64;
-    b64.Encode(brain->GeneticString, &rawData);
+    //Base64 b64;
+    //b64.Encode(brain->GeneticString, &rawData);
 
-    job["geneticDataB64"] = rawData;
+    //job["geneticDataB64"] = rawData;
     job["successfulActionCount"] = json(successfulActionCount);
     job["failedActionCount"] = json(failedActionCount);
 

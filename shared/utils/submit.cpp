@@ -12,16 +12,22 @@ using namespace boost;
 using namespace boost::asio;
 using namespace boost::asio::ip;
 
+
 void utils::submitJSON(json obj)
 {
+    cout << obj.dump() << endl;
+}
+
+void oldSubmitJSON(json obj)
+{
     string raw = obj.dump();
-    cout << raw << endl;
+    cdebug << raw << endl;
 
     static boost::asio::io_service myIOS;
 
     boost::asio::ip::tcp::iostream tcp_stream;
 
-    cout << "Connecting" << endl;
+    cdebug << "Connecting" << endl;
 
     string server = "localhost";
     string port = "3001";
@@ -30,11 +36,11 @@ void utils::submitJSON(json obj)
 
     if (!tcp_stream)
     {
-        std::cout << "Unable to connect: " << tcp_stream.error().message() << "\n";
+        cdebug << "Unable to connect: " << tcp_stream.error().message() << "\n";
         return;
     }
 
-    cout << "Writing" << endl;
+    cdebug << "Writing" << endl;
 
     tcp_stream << "POST /api/search HTTP/1.1 \r\n";
     tcp_stream << "Host: "
@@ -47,7 +53,7 @@ void utils::submitJSON(json obj)
     tcp_stream << "Connection: close\r\n\r\n"; //NOTE THE Double line feed
     tcp_stream << raw;
 
-    cout << "Response" << endl;
+    cdebug << "Response" << endl;
 
     // Check that response is OK.
     std::string http_version;
@@ -58,22 +64,22 @@ void utils::submitJSON(json obj)
     std::getline(tcp_stream, status_message);
     if (!tcp_stream || http_version.substr(0, 5) != "HTTP/")
     {
-        std::cout << "Invalid response\n";
-        std::cout << http_version << endl;
+        cdebug << "Invalid response\n";
+        cdebug << http_version << endl;
         return;
     }
     if (status_code != 200)
     {
-        std::cout << "Response returned with status code " << status_code << "\n";
+        cdebug << "Response returned with status code " << status_code << "\n";
         return;
     }
 
     // Process the response headers, which are terminated by a blank line.
     std::string header;
     while (std::getline(tcp_stream, header) && header != "\r")
-        std::cout << header << "\n";
-    std::cout << "\n";
+        cdebug << header << "\n";
+    cdebug << "\n";
 
     // Write the remaining data to output.
-    std::cout << tcp_stream.rdbuf();
+    cdebug << tcp_stream.rdbuf();
 }

@@ -32,7 +32,7 @@ json Simulation::GetJSON(std::string type)
     retJson["negFood"] = environment->colony->food_expense;
     retJson["members"] = json(children);
 
-    cout << "JSON: " << endl
+    cdebug << "JSON: " << endl
          << retJson.dump() << endl;
 
     return retJson;

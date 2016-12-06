@@ -62,7 +62,6 @@ app.get('/api/create_experiment', function (req, res) {
   });
 });
 /**
- * TODO: GENERATION TABLE has INTEGER[] attributes
  * Inserts into Generation Table
  * Accepts the following api string format
  *  api/create_generation?expID=(int)&parents=(int)&envs=(int)&genCM=(int)
@@ -78,6 +77,21 @@ app.get('/api/create_generation', function (req, res) {
   });
 });
 /**
+ * Inserts into CreationMechanism Table
+ * Accepts the following api string format
+ *  api/create_mechanism?cmID=(int)&purpose=(string)
+ * Returns
+ *  CM_ID
+ */
+ app.get('/api/create_mechanism', function (req, res) {
+   pool.connect(function(err, client, done){
+     db.create_mechanism(err, client, done, req, res);
+   });
+   pool.on('error', function (err, client) {
+     console.error('idle client error', err.message, err.stack)
+   });
+ });
+/**
  * Inserts into Entity Table
  * Accepts the following api string format
  *  api/create_entity?genBorn=(int)&genDied=(int)
@@ -86,7 +100,7 @@ app.get('/api/create_generation', function (req, res) {
  */
 app.get('/api/create_entity', function (req, res) {
   pool.connect(function(err, client, done){
-    db.create_experiment(err, client, done, req, res);
+    db.create_entity(err, client, done, req, res);
   });
   pool.on('error', function (err, client) {
     console.error('idle client error', err.message, err.stack)
@@ -108,8 +122,6 @@ app.get('/api/create_environment', function (req, res) {
   });
 });
 /**
- * TODO: CREATE SIMULATION TABLE IN DATABASE
- * TODO: GENERATION TABLE has INTEGER[] attributes
  * Inserts into Simulation Table
  * Accepts the following api string format
  *  api/create_entity?genID=(int)&envID=(int)&antList=(int)
@@ -117,6 +129,7 @@ app.get('/api/create_environment', function (req, res) {
  *  Ant_ID
  */
 app.get('/api/create_simulation', function (req, res) {
+  console.log("SIMULATION");
   pool.connect(function(err, client, done){
     db.create_simulation(err, client, done, req, res);
   });
@@ -125,8 +138,6 @@ app.get('/api/create_simulation', function (req, res) {
   });
 });
 /**
- * TODO: Inserts in SIMULATION TABLE IN DATABASE
- * TODO: GENERATION TABLE has INTEGER[] attributes
  * Inserts into Temp Table
  * Accepts the following api string format
  *  api/temp?GS=(varchar)&Lifetime=(int)&Parents=(int)&Fitness=(double)

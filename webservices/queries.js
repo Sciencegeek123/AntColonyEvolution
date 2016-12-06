@@ -166,24 +166,36 @@ function temp(err, client, done, req, res) {
 }
 /**
  * Inserts into Search Table
- * Accepts the following search/temp?lifetime=(int)&type=(string)&netFood=(int)&posFood=(int)&negFood=(int)&members=(json[])
+ * Accepts the following api/search?lifetime=(int)&type=(string)&netFood=(int)&posFood=(int)&negFood=(int)&members=(json[])
  */
 function search(err, client, done, req, res) {
     if(err) {
         return console.error('error fetching client from pool', err);
     }
-    //var reqArr = [req.query.gs, req.query.lifetime, req.query.fitness];
-    var reqArr = [req.query.lifetime, req.query.type, req.query.netFood, req.query.posFood, req.query.negFood, req.query.members];
+    var reqArr = [req.body.lifetime, req.body.type, req.body.netFood, req.body.posFood, req.body.negFood, req.body.members];
+    var jsonQuery = "";
+    var i;
+    jsonQuery += "array[";
+    for (i=0; i<req.body.members.length; i++) {
+        jsonQuery += JSON.stringify(req.body.members[i]) + "::json";
+        if (i < (req.body.members.length-1)) {
+            jsonQuery += ",";
+        }
+    }
+    jsonQuery += "]";
+    reqArr[5] = jsonQuery;
     client
+        //INSERT INTO "ACSchema"."Search"( "Lifetime", "Type", "Net_Food", "Pos_Food", "Neg_Food", "Members") VALUES (5, 4, 3, 2, 1, array_to_json('{{1,5},{99,100}}'::int[]));
         .query('INSERT INTO "ACSchema"."Search"("Lifetime", "Type", "Net_Food", "Pos_Food", "Neg_Food", "Members") VALUES ($1, $2, $3, $4, $5, $6)',
+        //.query('INSERT INTO "ACSchema"."Search"("Lifetime", "Type", "Net_Food", "Pos_Food", "Neg_Food", "Members") VALUES (1, 1, 1, 1, 1, array[\'{"key\":"value"}\'::json,\'{"key":"value"}\'::json])',
             reqArr,
             function(err) {
                 done();
                 if(err) {
-                    res.send('error running query');
+                    res.json({reqArr: reqArr[5]});
                     return console.error('error running query', err);
                 }
-                res.send("success");
+                res.send(req.query);
             });
 }
 
@@ -199,5 +211,6 @@ module.exports = {
     create_environment: create_environment,
     create_simulation: create_simulation,
     clientError: clientError,
-    temp: temp
+    temp: temp,
+    search: search
 };

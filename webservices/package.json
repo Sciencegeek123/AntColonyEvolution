@@ -7,11 +7,14 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "cfenv": "1.0.x",
     "express": "4.13.x",
     "pg": "^6.1.0"
   },
   "repository": {},
   "engines": {
+    "npm": "3.x",
     "node": "4.x"
   },
   "devDependencies": {

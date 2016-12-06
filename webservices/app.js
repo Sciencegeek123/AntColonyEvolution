@@ -1,15 +1,19 @@
 // This application uses express as its web server
 // for more info, see: http://expressjs.com
 var express = require('express');
+var cfenv = require('cfenv');
 // This application uses node-postgress
 // for more info, see: https://github.com/brianc/node-postgres
 var pg = require('pg');
 
 // create a new express server
 var app = express();
-app.set('port', (process.env.PORT || 3001));
+
+var appEnv = cfenv.getAppEnv();
+//app.set('port', (process.env.PORT || 3001));
 // internal exports
 var db = require('./queries.js');
+var bodyParser = require('body-parser');
 var config = require('./config.js');
 
 //this initializes a connection pool
@@ -18,6 +22,17 @@ var config = require('./config.js');
 var config = config.pg;
 var pool = new pg.Pool(config);
 
+//app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
+//app.use(function (req, res) {
+//  res.setHeader('Content-Type', 'application/json')
+//  res.write('you posted:\n')
+//  res.end(JSON.stringify(req.body, null, 2))
+//})
+app.use(function (req, res, next) {
+  console.log(req.body); // populated!
+  next();
+});
 /**********************************************************************************************************************
                                             GET operations
  *********************************************************************************************************************/
@@ -31,18 +46,22 @@ app.get('/api/Puppies/:id', function (req, res) {
   });
 });
 
-app.get('/api/users', function(req, res) {
+app.post('/api/users', function(req, res) {
+  console.log(req.body);
+  res.send(req.body);
+  //res.json(req);
+});
+
+app.get('/api/test/:num', function(req, res) {
   var obj = {
     user_id: req.params.id,
     token: req.params.token,
     geo: req.params.geo
   };
 
-  res.send(req.query);
+  res.send(req.params);
   //res.json(req);
 });
-
-
 /**********************************************************************************************************************
                                           PUT operations
  *********************************************************************************************************************/
@@ -144,12 +163,13 @@ app.get('/api/temp', function (req, res) {
 });
 /**
  * Inserts into Search Table
- * Accepts the following search/temp?lifetime=(int)&type=(string)&netFood=(int)&posFood=(int)&negFood=(int)&members=(json[])
+ * Accepts the following api/search?lifetime=(int)&type=(string)&netFood=(int)&posFood=(int)&negFood=(int)&members=(json[])
+ * sample string: api/search?lifetime=1&type=typestring&netFood=23&posFood=43&negFood=43&members[]={key:value}
  */
-app.get('/api/search', function (req, res) {
-  console.log(req.query);
+app.post('/api/search', function (req, res) {
+  console.log(req);
   pool.connect(function(err, client, done){
-    db.temp(err, client, done, req, res);
+    db.search(err, client, done, req, res);
   });
   pool.on('error', function (err, client) {
     console.error('idle client error', err.message, err.stack)
@@ -158,7 +178,9 @@ app.get('/api/search', function (req, res) {
 //app.listen(appEnv.port, '0.0.0.0', function() {
 //  console.log("server starting on " + appEnv.url);
 //});
-app.listen(app.get('port'), function() {
-  console.log('Find the server at: http://localhost:' + app.get('port')); // eslint-disable-line no-console
+//
+app.listen(appEnv.port, '0.0.0.0', function () {
+  // print a message when the server starts listening
+  console.log("server starting on " + appEnv.url);
 });
 // PUT

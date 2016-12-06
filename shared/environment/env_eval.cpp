@@ -12,8 +12,8 @@ using namespace std;
 bool Environment::EvaluateAction(OutputActions action,
                                  std::shared_ptr<Ant> &ant)
 {
-  cout << "Iteration: " << iteration << endl;
-  cout << "* Action: " << OutputStrings[(int)action] << endl;
+  cdebug << "Iteration: " << iteration << endl;
+  cdebug << "* Action: " << OutputStrings[(int)action] << endl;
 
   switch (action)
   {
@@ -25,7 +25,7 @@ bool Environment::EvaluateAction(OutputActions action,
   case OutputActions::MoveUP:
   {
     Tile *from = get(ant->Pos);
-    Tile *to = get(ant->Pos.second + 1, ant->Pos.first);
+    Tile *to = get(ant->Pos.first, ant->Pos.second + 1);
     int cost = to->height - from->height;
 
     if (cost < 0)
@@ -40,6 +40,8 @@ bool Environment::EvaluateAction(OutputActions action,
       ant->registerFoodDelta(cost);
       to->MoveTo(ant);
       from->MoveFrom(ant);
+      ant->Pos.second += 1;
+      cdebug << "Moved up" << endl;
       return true;
     }
     else
@@ -50,7 +52,7 @@ bool Environment::EvaluateAction(OutputActions action,
   case OutputActions::MoveDOWN:
   {
     Tile *from = get(ant->Pos);
-    Tile *to = get(ant->Pos.second - 1, ant->Pos.first);
+    Tile *to = get(ant->Pos.first, ant->Pos.second - 1);
     int cost = to->height - from->height;
 
     if (cost < 0)
@@ -65,6 +67,8 @@ bool Environment::EvaluateAction(OutputActions action,
       ant->registerFoodDelta(cost);
       to->MoveTo(ant);
       from->MoveFrom(ant);
+      ant->Pos.second -= 1;
+      cdebug << "Moved down" << endl;
       return true;
     }
     else
@@ -75,7 +79,7 @@ bool Environment::EvaluateAction(OutputActions action,
   case OutputActions::MoveLEFT:
   {
     Tile *from = get(ant->Pos);
-    Tile *to = get(ant->Pos.second, ant->Pos.first - 1);
+    Tile *to = get(ant->Pos.first - 1, ant->Pos.second);
     int cost = to->height - from->height;
 
     if (cost < 0)
@@ -90,6 +94,8 @@ bool Environment::EvaluateAction(OutputActions action,
       ant->registerFoodDelta(cost);
       to->MoveTo(ant);
       from->MoveFrom(ant);
+      ant->Pos.first -= 1;
+      cdebug << "Moved left" << endl;
       return true;
     }
     else
@@ -100,7 +106,7 @@ bool Environment::EvaluateAction(OutputActions action,
   case OutputActions::MoveRIGHT:
   {
     Tile *from = get(ant->Pos);
-    Tile *to = get(ant->Pos.second + 1, ant->Pos.first + 1);
+    Tile *to = get(ant->Pos.first + 1, ant->Pos.second);
     int cost = to->height - from->height;
 
     if (cost < 0)
@@ -115,6 +121,8 @@ bool Environment::EvaluateAction(OutputActions action,
       ant->registerFoodDelta(cost);
       to->MoveTo(ant);
       from->MoveFrom(ant);
+      ant->Pos.first += 1;
+      cdebug << "Moved right" << endl;
       return true;
     }
     else
@@ -185,7 +193,8 @@ bool Environment::EvaluateAction(OutputActions action,
     if (cost >= 0 && ant->checkFoodDelta(-cost))
     {
       here->Cultivate(ant);
-      ant->registerFoodDelta(-cost);
+      if (cost > 0)
+        ant->registerFoodDelta(-cost);
       return true;
     }
     return false;

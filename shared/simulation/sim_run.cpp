@@ -46,22 +46,16 @@ void Simulation::Run(int duration)
       else
       {
         actionCount[(int)OutputActions::FailedAction]++;
-        cout << "* Action Failed" << endl;
+        cdebug << "* Action Failed" << endl;
         ant->registerFoodDelta(-Settings.Action_FailedActionCost);
       }
       ant->ReflectAction(action, success);
       ant->Step();
     }
     environment->Step();
-
-    if (++iteration % 100 == 0)
-    {
-      cout << ".";
-      if (iteration % 1000 == 0)
-        cout << endl;
-      cout.flush();
-    }
   } while (duration-- > 0 && ants.size() > 0);
 
-  cout << "Simulation ended with " << duration << " iterations left." << endl;
+  environment->colony->registerFoodDelta(-Settings.Tile_ColonyFoodConsumption * duration);
+
+  cdebug << "Simulation ended with " << duration << " iterations left." << endl;
 }

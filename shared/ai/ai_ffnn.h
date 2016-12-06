@@ -17,5 +17,5 @@ public:
   static std::shared_ptr<AI> createRandom();
   static std::shared_ptr<AI> createFrom(std::string &input);
   OutputActions get(ACSData input);
-  std::shared_ptr<AI> reproduce(std::shared_ptr<std::set<std::shared_ptr<Ant>, AntComparator>> parents) { return createRandom(); }
+  std::shared_ptr<AI> reproduce(std::shared_ptr<std::set<std::shared_ptr<Ant>, AntComparator>> parents);
 };

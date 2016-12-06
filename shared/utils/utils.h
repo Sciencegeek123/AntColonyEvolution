@@ -5,6 +5,7 @@
 #include <memory>
 #include <random>
 #include <string>
+#include <streambuf>
 
 #define ENV_SIDE 256
 #define ENV_SIZE 65536
@@ -13,6 +14,8 @@ typedef unsigned char byte;
 typedef std::unique_ptr<std::array<byte, 64>> ACSData;
 
 #include "utils/enums.h"
+
+extern std::ostream cdebug;
 
 struct _Settings
 {
@@ -29,6 +32,9 @@ public:
 
   int Ant_StepCost = 5;
 
+  int AI_MutateChance = 250;
+  int AI_MutateMagnitude = 5;
+
   int Action_WalkFoodCostPerHeight = 1;
   int Action_WalkFoodCostBase = 5;
   int Action_PersonalMemoryChangeCost = 5;
@@ -42,10 +48,25 @@ public:
   int Tile_TrapIdleCost = 50;
   int Tile_WallIdleCost = ANT_MAX_FOOD;
 
+  int Tile_ColonyFoodConsumption = 10;
+
   int Tile_FoodStartCapacity = 25000;
   int Tile_FoodTransferAmount = 500;
 
+  int Tile_GrassCultivateAmount = 5;
+
+  int Tile_GrassWorkCost = 50;
+  int Tile_GrassWorkProbability = 100;
+
+  int Tile_GrassBuildCost = 500;
+
   int Tile_PlantTransferAmount = 100;
+
+  int Tile_TrapWorkCost = 50;
+  int Tile_TrapWorkDelta = 500;
+
+  int Tile_SandWorkCost = 50;
+  int Tile_SandWorkProbability = 100;
 
   int Tile_TrapFoodDesire = 5000;
   int Tile_TrapLifetime = 250;

@@ -98,6 +98,9 @@ struct ColonyTile : public Tile
 public:
   ColonyTile(byte h, int p) : Tile(TileType::Colony, h, p){};
 
+  int registerFoodDelta(int delta);
+  bool checkFoodDelta(int delta);
+
   byte memory_static_a = 0;
   byte memory_static_b = 0;
   byte memory_static_c = 0;
@@ -108,7 +111,7 @@ public:
   // Food
   unsigned int food_income = 0;
   unsigned int food_expense = 0;
-  unsigned int food_net = 0;
+  int food_net = 0;
   std::list<int> food_change_log;
   Tile *Step();
 };
@@ -145,15 +148,28 @@ public:
 struct GrassTile : public Tile
 {
 public:
+  bool upgradeToFood = false;
+  bool upgradeToRoad = false;
   GrassTile(byte h, int p) : Tile(TileType::Grass, h, p){};
+
+  int CanWork(std::shared_ptr<Ant> &) { return Settings.Tile_GrassWorkCost; }
+  int CanCultivate(std::shared_ptr<Ant> &) { return 0; }
+  int CanBuild(std::shared_ptr<Ant> &) { return Settings.Tile_GrassBuildCost; }
+
+  void Work(std::shared_ptr<Ant> &);
+  void Cultivate(std::shared_ptr<Ant> &);
+  void Build(std::shared_ptr<Ant> &);
   Tile *Step();
 };
 
 struct SandTile : public Tile
 {
 public:
+  bool upgradeToGrass = false;
   SandTile(byte h, int p) : Tile(TileType::Sand, h, p){};
   Tile *Step();
+  int CanWork(std::shared_ptr<Ant> &) { return Settings.Tile_SandWorkCost; }
+  void Work(std::shared_ptr<Ant> &);
 };
 
 struct TrapTile : public Tile
@@ -164,6 +180,8 @@ private:
 
 public:
   TrapTile(byte h, int p) : Tile(TileType::Trap, h, p){};
+  int CanWork(std::shared_ptr<Ant> &) { return Settings.Tile_TrapWorkCost; }
+  void Work(std::shared_ptr<Ant> &);
   Tile *Step();
 };
 

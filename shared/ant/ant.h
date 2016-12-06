@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <cstdio>
 
 struct ANT_GC
 {
@@ -103,4 +104,9 @@ public:
   void ReleaseLargeScentA();
   void ReleaseSmallScentB();
   void ReleaseLargeScentB();
+
+  void print(std::ostream &out)
+  {
+    out << "I: " << ID << " F: " << food_net << " FP: " << food_income << " FN: " << food_expense << std::endl;
+  }
 };

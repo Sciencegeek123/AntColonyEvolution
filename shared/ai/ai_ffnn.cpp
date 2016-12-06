@@ -1,5 +1,7 @@
 // Project Includes
 #include "ai/ai_ffnn.h"
+#include "utils/utils.h"
+#include "ant/ant.h"
 
 // STL Includes
 #include <random>
@@ -51,6 +53,11 @@ inline float BtoF(byte &b)
     return ((float)b - 127.0f) / 128.0f;
 }
 
+inline float BtoPF(byte &b)
+{
+    return (float)b / 255.0f;
+}
+
 struct ConstantNode
 {
     std::array<float, 64> weights;
@@ -93,8 +100,14 @@ class Layer
             arr[j] += constant.weights[j];
         }
 
+        for (int i = 0; i < 64; i++)
+        {
+            (*out)[i] = 1.0f / (1.0f + exp(-(*out)[i]));
+        }
+
         in.reset(out);
     };
+
     void processThresholds(std::unique_ptr<std::array<float, 64>> &in)
     {
         for (int i = 0; i < 64; i++)
@@ -113,7 +126,7 @@ class Layer
             {
                 nodes[i].weights[j] = BtoF(str[start++]);
             }
-            nodes[i].trigger = BtoF(str[start++]);
+            nodes[i].trigger = BtoPF(str[start++]);
         }
         for (int j = 0; j < 64; j++)
         {
@@ -144,7 +157,8 @@ OutputActions FFNN_AI::get(ACSData in)
     std::unique_ptr<std::array<float, 64>> data(new std::array<float, 64>);
     for (int i = 0; i < 64; i++)
     {
-        (*data)[i] = BtoF((*in)[i]);
+        (*data)[i] = BtoPF((*in)[i]);
+        cdebug << "I: " << InputStrings[i] << " - " << (*data)[i] << endl;
     }
 
     layers[0].processWeights(data);
@@ -163,11 +177,40 @@ OutputActions FFNN_AI::get(ACSData in)
         if ((*data)[i] > max_weight)
         {
             max_weight = (*data)[i];
+
+            cdebug << "* Wi: " << i << " - " << (*data)[i] << endl;
             max_index = i;
         }
     }
 
-    cout << "* W: " << max_weight << endl;
+    cdebug << "* W: " << max_weight << endl;
 
     return (OutputActions)max_index;
+}
+std::shared_ptr<AI> FFNN_AI::reproduce(std::shared_ptr<std::set<std::shared_ptr<Ant>, AntComparator>> parents)
+{
+    string myString;
+    int delta = 38128 / parents->size();
+    int pos = 0;
+
+    if (parents->size() == 0)
+    {
+        return createRandom();
+    }
+    else
+    {
+
+        for (auto a : *parents)
+        {
+            for (int i = 0; i < delta; i++)
+            {
+                myString.push_back(a->brain->GeneticString[pos++]);
+                if (utils::getRandomInt() % Settings.AI_MutateChance == 0)
+                {
+                    myString.back() += (utils::getRandomInt() % (Settings.AI_MutateMagnitude * 2)) - (Settings.AI_MutateMagnitude * 2);
+                }
+            }
+        }
+    }
+    return shared_ptr<AI>(new FFNN_AI(myString));
 }

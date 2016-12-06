@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
 
 class Environment;
 class AI;
@@ -27,4 +28,25 @@ public:
 
   void Run(int duration);
   void Report();
+  void SubmitSearch();
+  bool IsOverThreshold(int threshold = 10)
+  {
+
+    if (environment->colony->food_income > 0)
+      return true;
+
+    for (auto a : ants)
+    {
+      if (a->food_income > threshold)
+        return true;
+    }
+
+    for (auto a : deadAnts)
+    {
+      if (a->food_income > threshold)
+        return true;
+    }
+
+    return false;
+  }
 };

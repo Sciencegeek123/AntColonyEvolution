@@ -1,6 +1,6 @@
 # Declaration of variables
 CC = clang++
-CC_FLAGS =-std=c++14 -O3 -ggdb -I../shared/ -I./
+CC_FLAGS =-std=c++14 -O3 -ffast-math -lboost_system -lboost_thread -I../shared/ -I./
 
 # File names
 EXEC = ./acs_client
@@ -24,7 +24,7 @@ dev:
 	$(MAKE) rmobj
 	@echo ""
 	@echo "************  RUNNING EXECUTABLE TEST ************"
-	$(EXEC) testFFNNSpeed
+	$(EXEC) testRandSpeed
 
 
 #This is everything that needs to happen when first starting.
@@ -49,7 +49,7 @@ super_dev:
 	$(MAKE) rmobj
 	@echo ""
 	@echo "************  RUNNING EXECUTABLE TEST ************"
-	$(EXEC) testFFNNSpeed
+	$(EXEC) testRandSpeed
 
 # Exec target
 $(EXEC): $(OBJECTS)

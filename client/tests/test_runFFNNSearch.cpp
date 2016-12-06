@@ -14,16 +14,16 @@
 using namespace std;
 using namespace std::chrono;
 
-#define SIM_COUNT 1000
+#define SIM_COUNT 100
 
-void runFFNNTestSimulation()
+void runFFNNSearch()
 {
     high_resolution_clock myClock;
     auto start = myClock.now();
 
     cout << "Running test: FFNN Simulation Test - Speed Check" << endl;
 
-    for (int i = 0; i < SIM_COUNT; i++)
+    for (int i = 0; i < SIM_COUNT;)
     {
         shared_ptr<Environment> env = shared_ptr<Environment>(new Environment());
         shared_ptr<AI> ai = FFNN_AI::createRandom();
@@ -33,6 +33,13 @@ void runFFNNTestSimulation()
         sim->Run(Settings.SIM_DURATION);
         sim->Report();
         cout.flush();
+
+        if (sim->IsOverThreshold())
+        {
+            i++;
+            cout << "!!! Found " << i << " FFNN over threshold." << endl;
+            sim->SubmitSearch();
+        }
     }
     cout << endl;
 

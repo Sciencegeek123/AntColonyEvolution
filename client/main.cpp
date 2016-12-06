@@ -25,6 +25,9 @@ int main(int argc, char **argv)
   validArgs.emplace("testEnv");
   argDesc.emplace("testEnv", "Prints a random environment for analysis.");
 
+  validArgs.emplace("runFFNNSearch");
+  argDesc.emplace("runFFNNSearch", "Searches for 100 FFNN strings over the threshold of 10.");
+
   set<string> args;
 
   if (argc == 1)
@@ -111,6 +114,11 @@ int main(int argc, char **argv)
     cout << "#########################" << endl;
     cout << endl;
     //utils::initRandom();
+  }
+
+  if (args.find(string("runFFNNSearch")) != args.end())
+  {
+    runFFNNSearch();
   }
 
   if (args.find(string("testFFNNSpeed")) != args.end())

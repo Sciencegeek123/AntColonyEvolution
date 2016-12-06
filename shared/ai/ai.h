@@ -16,9 +16,9 @@ class AI
 {
 protected:
   AI(std::string input);
-  std::string GeneticString;
 
 public:
+  std::string GeneticString;
   virtual std::string getTypeName();
   static std::shared_ptr<AI> createRandom();
   static std::shared_ptr<AI> createFrom(std::string &input);

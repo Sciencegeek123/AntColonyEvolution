@@ -13,7 +13,7 @@
 using namespace std;
 using namespace std::chrono;
 
-#define SIM_COUNT 1
+#define SIM_COUNT 10
 
 void runRandomTestSimulation()
 {

@@ -12,6 +12,10 @@
 #include <map>
 #include <iostream>
 
+//deps
+#include "deps/json.hpp"
+using nlohmann::json;
+
 class Environment;
 class AI;
 class Ant;
@@ -29,6 +33,7 @@ public:
   void Run(int duration);
   void Report();
   void SubmitSearch();
+  json GetJSON(std::string type);
   bool IsOverThreshold(int threshold = 10)
   {
 

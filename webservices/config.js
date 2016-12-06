@@ -4,11 +4,11 @@
  */
 // Defines pg config for DB server connection
 var pg = {
-    user: 'postgres', //env var: PGUSER
+    user: 'acs_server', //env var: PGUSER
     database: 'AntColony_DB', //env var: PGDATABASE
-    password: 'antcolony', //env var: PGPASSWORD
-    host: 'localhost', // Server hosting the postgres database
-    port: 5432, //env var: PGPORT
+    password: 'LetsMakeAntsDoWorkForUs', //env var: PGPASSWORD
+    host: '68.227.130.141', // Server hosting the postgres database
+    port: 2224, //env var: PGPORT
     max: 10, // max number of clients in the pool
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };

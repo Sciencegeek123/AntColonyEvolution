@@ -136,8 +136,56 @@ function create_simulation(err, client, done, req, res) {
                 }
             });
 }
-
-
+/**
+ * TODO: CREATE SIMULATION TABLE IN DATABASE
+ * TODO: GENERATION TABLE has INTEGER[] attributes (currently only takes a single integer req.antList)
+ * Inserts into Simulation Table
+ * Accepts the following api api/temp?gs=(string)&lifetime=(int)&fitness=(int)string format
+ *
+ * Returns
+ *  Ant_ID
+ */
+function temp(err, client, done, req, res) {
+    if(err) {
+        return console.error('error fetching client from pool', err);
+    }
+    //var reqArr = [req.query.gs, req.query.lifetime, req.query.fitness];
+    var reqArr = [req.query.gs, req.query.lifetime, req.query.parents, req.query.fitness];
+    client
+        //.query('INSERT INTO "ACSchema"."Temp"( "GS", "Lifetime", "Parents", "Fitness") VALUES ($1, $2, $3, $4)',
+        .query('INSERT INTO "ACSchema"."Temp"( "GS", "Lifetime", "Parents", "Fitness") VALUES ($1, $2, $3, $4)',
+            reqArr,
+            function(err) {
+                done();
+                if(err) {
+                    res.send('error running query');
+                    return console.error('error running query', err);
+                }
+                res.send("success");
+            });
+}
+/**
+ * Inserts into Search Table
+ * Accepts the following search/temp?lifetime=(int)&type=(string)&netFood=(int)&posFood=(int)&negFood=(int)&members=(json[])
+ */
+function search(err, client, done, req, res) {
+    if(err) {
+        return console.error('error fetching client from pool', err);
+    }
+    //var reqArr = [req.query.gs, req.query.lifetime, req.query.fitness];
+    var reqArr = [req.query.lifetime, req.query.type, req.query.netFood, req.query.posFood, req.query.negFood, req.query.members];
+    client
+        .query('INSERT INTO "ACSchema"."Search"("Lifetime", "Type", "Net_Food", "Pos_Food", "Neg_Food", "Members") VALUES ($1, $2, $3, $4, $5, $6)',
+            reqArr,
+            function(err) {
+                done();
+                if(err) {
+                    res.send('error running query');
+                    return console.error('error running query', err);
+                }
+                res.send("success");
+            });
+}
 
 
 function clientError(err, client) {
@@ -150,5 +198,6 @@ module.exports = {
     create_entity: create_entity,
     create_environment: create_environment,
     create_simulation: create_simulation,
-    clientError: clientError
+    clientError: clientError,
+    temp: temp
 };

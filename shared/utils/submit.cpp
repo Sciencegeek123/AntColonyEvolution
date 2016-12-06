@@ -2,6 +2,8 @@
 
 #include <sstream>
 #include <boost/asio.hpp>
+#include <termios.h>
+#include <iostream>
 
 using namespace std;
 using namespace utils;
@@ -15,39 +17,63 @@ void utils::submitJSON(json obj)
     string raw = obj.dump();
     cout << raw << endl;
 
-    boost::asio::streambuf request;
-    std::ostream request_stream(&request);
-
-    request_stream << "POST /api/search/ HTTP/1.1 \r\n";
-    request_stream << "Host:"
-                   << "167.96.54.7:3001"
-                   << "\r\n ";
-    request_stream
-        << "User-Agent: C/1.0";
-    request_stream << "Content-Type: application/json; charset=utf-8 \r\n";
-    request_stream << "Accept: */*\r\n";
-    request_stream << "Content-Length: " << raw.length() << "\r\n";
-    request_stream << "Connection: close\r\n\r\n"; //NOTE THE Double line feed
-    request_stream << raw;
-
-    boost::asio::ip::tcp::endpoint endpoint(
-        boost::asio::ip::address::from_string("167.96.54.7"), 3001);
-
     static boost::asio::io_service myIOS;
-    // Try each endpoint until we successfully establish a connection.
-    tcp::socket socket(myIOS);
+
+    boost::asio::ip::tcp::iostream tcp_stream;
 
     cout << "Connecting" << endl;
 
-    socket.connect(endpoint);
+    string server = "localhost";
+    string port = "3001";
+
+    tcp_stream.connect(server, port);
+
+    if (!tcp_stream)
+    {
+        std::cout << "Unable to connect: " << tcp_stream.error().message() << "\n";
+        return;
+    }
 
     cout << "Writing" << endl;
 
-    boost::asio::write(socket, request);
+    tcp_stream << "POST /api/search HTTP/1.1 \r\n";
+    tcp_stream << "Host: "
+               << server << ":" << port
+               << "\r\n ";
+    tcp_stream << "User-Agent: C/1.0";
+    tcp_stream << "Content-Type: application/json; charset=utf-8 \r\n";
+    tcp_stream << "Accept: */*\r\n";
+    tcp_stream << "Content-Length: " << raw.length() << "\r\n";
+    tcp_stream << "Connection: close\r\n\r\n"; //NOTE THE Double line feed
+    tcp_stream << raw;
 
-    cout << "Closing" << endl;
+    cout << "Response" << endl;
 
-    boost::system::error_code ec;
-    socket.shutdown(tcp::socket::shutdown_both, ec);
-    socket.close(ec);
+    // Check that response is OK.
+    std::string http_version;
+    tcp_stream >> http_version;
+    unsigned int status_code;
+    tcp_stream >> status_code;
+    std::string status_message;
+    std::getline(tcp_stream, status_message);
+    if (!tcp_stream || http_version.substr(0, 5) != "HTTP/")
+    {
+        std::cout << "Invalid response\n";
+        std::cout << http_version << endl;
+        return;
+    }
+    if (status_code != 200)
+    {
+        std::cout << "Response returned with status code " << status_code << "\n";
+        return;
+    }
+
+    // Process the response headers, which are terminated by a blank line.
+    std::string header;
+    while (std::getline(tcp_stream, header) && header != "\r")
+        std::cout << header << "\n";
+    std::cout << "\n";
+
+    // Write the remaining data to output.
+    std::cout << tcp_stream.rdbuf();
 }

@@ -125,7 +125,7 @@ app.get('/api/create_simulation', function (req, res) {
   });
 });
 /**
- * TODO: CREATE SIMULATION TABLE IN DATABASE
+ * TODO: Inserts in SIMULATION TABLE IN DATABASE
  * TODO: GENERATION TABLE has INTEGER[] attributes
  * Inserts into Temp Table
  * Accepts the following api string format
@@ -134,6 +134,19 @@ app.get('/api/create_simulation', function (req, res) {
  *
  */
 app.get('/api/temp', function (req, res) {
+  console.log(req.query);
+  pool.connect(function(err, client, done){
+    db.temp(err, client, done, req, res);
+  });
+  pool.on('error', function (err, client) {
+    console.error('idle client error', err.message, err.stack)
+  });
+});
+/**
+ * Inserts into Search Table
+ * Accepts the following search/temp?lifetime=(int)&type=(string)&netFood=(int)&posFood=(int)&negFood=(int)&members=(json[])
+ */
+app.get('/api/search', function (req, res) {
   console.log(req.query);
   pool.connect(function(err, client, done){
     db.temp(err, client, done, req, res);

@@ -164,7 +164,28 @@ function temp(err, client, done, req, res) {
                 res.send("success");
             });
 }
-
+/**
+ * Inserts into Search Table
+ * Accepts the following search/temp?lifetime=(int)&type=(string)&netFood=(int)&posFood=(int)&negFood=(int)&members=(json[])
+ */
+function search(err, client, done, req, res) {
+    if(err) {
+        return console.error('error fetching client from pool', err);
+    }
+    //var reqArr = [req.query.gs, req.query.lifetime, req.query.fitness];
+    var reqArr = [req.query.lifetime, req.query.type, req.query.netFood, req.query.posFood, req.query.negFood, req.query.members];
+    client
+        .query('INSERT INTO "ACSchema"."Search"("Lifetime", "Type", "Net_Food", "Pos_Food", "Neg_Food", "Members") VALUES ($1, $2, $3, $4, $5, $6)',
+            reqArr,
+            function(err) {
+                done();
+                if(err) {
+                    res.send('error running query');
+                    return console.error('error running query', err);
+                }
+                res.send("success");
+            });
+}
 
 
 function clientError(err, client) {

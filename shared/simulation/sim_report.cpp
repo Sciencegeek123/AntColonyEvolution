@@ -8,4 +8,24 @@
 #include <iostream>
 #include <random>
 
-void Simulation::Report() {}
+using namespace std;
+
+void Simulation::Report()
+{
+    for (auto i = (int)OutputActions::NoOP; i < (int)OutputActions::OutputActionsSize; i++)
+    {
+        cdebug << OutputStrings[i] << " : " << actionCount[i] << endl;
+    }
+    cout << "CN: " << environment->colony->food_net << " It: " << environment->iteration << endl;
+    for (auto a : ants)
+    {
+        cout << "* ";
+        a->print(cout);
+    }
+
+    for (auto a : deadAnts)
+    {
+        cout << "* ";
+        a->print(cout);
+    }
+}

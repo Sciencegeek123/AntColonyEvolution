@@ -2,28 +2,30 @@
 #include "utils/utils.h"
 using namespace std;
 
-ACSData Ant::GetPersonalInput(unsigned int round) {
+ACSData Ant::GetPersonalInput(unsigned int iteration) {
   ACSData input = utils::newACSData();
 
   {  // CurrentFoodMagnitude
-    (*input)[InputVars::CurrentFoodMagnitude] = food_net;
+    (*input)[InputVars::CurrentFoodMagnitude] =
+        (byte)(255 * ((float)food_net / (float)GC->MyFood_Scale * 4.0f));
   }
   {  // Age
 
-    float age = (round - creationTime);
+    float age = (iteration - creationTime);
     (*input)[InputVars::Age] =
         (byte)(age / (pow(GC->Age_Scale, 1.57079f) + age) * 255.0f);
   }
   {  // InverseAge
 
-    float age = (round - creationTime);
+    float age = (iteration - creationTime);
     (*input)[InputVars::InverseAge] = (byte)(
         1.0f - (age / (pow(GC->InverseAge_Scale, 1.57079f) + age) * 255.0f));
   }
   {  // MovingPersonalFoodTrend
 
     unsigned int duration = (unsigned int)GC->PersonalFoodTrend_Duration *
-                            (unsigned int)GC->PersonalFoodTrend_Duration;
+                                (unsigned int)GC->PersonalFoodTrend_Duration +
+                            1;
 
     float change = 0;
     int i = duration;
@@ -37,78 +39,54 @@ ACSData Ant::GetPersonalInput(unsigned int round) {
 
   {  // LifetimePersonalFoodTrend
     (*input)[InputVars::LifetimeColonyFoodTrend] =
-        (food_net / (round - creationTime + 1));
+        (food_net / (iteration - creationTime + 1));
+  }
+  {  // PersonalTimerA
+    float timerA =
+        (float)(iteration - PersonalTimerA) /
+        (float)((iteration - PersonalTimerA) + GC->PersonalTimerA_Scale + 1);
+
+    (*input)[InputVars::PersonalTimerA] = timerA > 255 ? 255 : (byte)timerA;
   }
   {
-      // PersonalTimerA
-  } {
-      // PersonalTimerB
-  } {
-      // PersonalDecayingMemoryA
-  } {
-      // PersonalDecayingMemoryB
-  } {
-      // PersonalDecayingMemoryC
-  } {
-      // PersonalDecayingMemoryD
-  } {
-      // PersonalStaticMemoryA
-  } {
-      // PersonalStaticMemoryB
-  } {
-      // PersonalStaticMemoryC
-  } {
-      // PersonalStaticMemoryD
-  } {
-      // PersonalPassiveScentO
-  } {
-      // PersonalPassiveScentPP
-  } {
-      // PersonalPassiveScentPN
-  } {
-      // PersonalPassiveScentNP
-  } {
-      // PersonalPassiveScentNN
-  } {
-      // PersonalActiveScentAO
-  } {
-      // PersonalActiveScentAPP
-  } {
-      // PersonalActiveScentAPN
-  } {
-      // PersonalActiveScentANP
-  } {
-      // PersonalActiveScentANN
-  } {
-      // PersonalActiveScentBO
-  } {
-      // PersonalActiveScentBPP
-  } {
-      // PersonalActiveScentBPN
-  } {
-      // PersonalActiveScentBNP
-  } {
-      // PersonalActiveScentBNN
-  } {
-      // ColonyPassiveScentO
-  } {
-      // ColonyPassiveScentPP
-  } {
-      // ColonyPassiveScentPN
-  } {
-      // ColonyPassiveScentNP
-  } {
-      // ColonyPassiveScentNN
-  } {
-      // ColonyActiveScentCO
-  } {
-      // ColonyActiveScentCPP
-  } {
-      // ColonyActiveScentCPN
-  } {
-      // ColonyActiveScentCNP
-  } {  // ColonyActiveScentCNN
-  }
+    // PersonalTimerB
+    float timerB =
+        (float)(iteration - PersonalTimerB) /
+        (float)((iteration - PersonalTimerB) + GC->PersonalTimerB_Scale + 1);
 
+    (*input)[InputVars::PersonalTimerB] = timerB > 255 ? 255 : (byte)timerB;
+  }
+  {
+    // PersonalDecayingMemoryA
+    (*input)[InputVars::PersonalTimerA] = memory_decaying_a;
+  }
+  {
+    // PersonalDecayingMemoryB
+    (*input)[InputVars::PersonalTimerA] = memory_decaying_b;
+  }
+  {
+    // PersonalDecayingMemoryC
+    (*input)[InputVars::PersonalTimerA] = memory_decaying_c;
+  }
+  {
+    // PersonalDecayingMemoryD
+    (*input)[InputVars::PersonalTimerA] = memory_decaying_d;
+  }
+  {
+    // PersonalStaticMemoryA
+    (*input)[InputVars::PersonalTimerA] = memory_static_a;
+  }
+  {
+    // PersonalStaticMemoryB
+    (*input)[InputVars::PersonalTimerA] = memory_static_b;
+  }
+  {
+    // PersonalStaticMemoryC
+    (*input)[InputVars::PersonalTimerA] = memory_static_c;
+  }
+  {
+    // PersonalStaticMemoryD
+    (*input)[InputVars::PersonalTimerA] = memory_static_d;
+  }
   return move(input);
 }

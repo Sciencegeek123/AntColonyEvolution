@@ -1,0 +1,20 @@
+#This is a config file build for the ACS program.
+#This file is to be found at the same directory as the client or server.
+# Lines starting with # are ignored.
+# Other lines are Key Value pairs.
+# Invalid settings cause the program to exit.
+
+# Redis Settings
+RD_HOST "localhost"
+RD_AUTH "LetsMakeSomeAntsDoWorkForUs"
+
+# Environment Settings
+ENV_SIDE 256
+ENV_SIZE 65536
+
+# Simulation Settings
+SIM_DURATION 256 * 256
+
+# Simulation Food Settings
+START_ANT_FOOD 1000
+MAX_ANT_FOOD 50000

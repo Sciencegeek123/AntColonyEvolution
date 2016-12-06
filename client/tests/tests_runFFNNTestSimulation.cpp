@@ -1,6 +1,7 @@
 // Project Includes
 #include "tests/tests.h"
 #include "ai/ai_random.h"
+#include "ai/ai_ffnn.h"
 #include "environment/environment.h"
 #include "simulation/simulation.h"
 #include "utils/utils.h"
@@ -13,19 +14,19 @@
 using namespace std;
 using namespace std::chrono;
 
-#define SIM_COUNT 10
+#define SIM_COUNT 1000
 
-void runRandomTestSimulation()
+void runFFNNTestSimulation()
 {
     high_resolution_clock myClock;
     auto start = myClock.now();
 
-    cout << "Running test: Random Simulation Test - Speed Check" << endl;
+    cout << "Running test: FFNN Simulation Test - Speed Check" << endl;
 
     for (int i = 0; i < SIM_COUNT; i++)
     {
         shared_ptr<Environment> env = shared_ptr<Environment>(new Environment());
-        shared_ptr<AI> ai = Random_AI::createRandom();
+        shared_ptr<AI> ai = FFNN_AI::createRandom();
         shared_ptr<Simulation> sim =
             shared_ptr<Simulation>(new Simulation(env, ai));
 

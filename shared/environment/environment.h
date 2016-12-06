@@ -1,9 +1,8 @@
 #pragma once
 
 // Project Includes
-#include "../config.h"
-#include "utils/utils.h"
 #include "environment/tile.h"
+#include "utils/utils.h"
 
 // Dep Includes
 #include <array>
@@ -16,23 +15,40 @@
 class Ant;
 class Simulation;
 
-struct Environment {
- private:
-  std::array<std::shared_ptr<Tile>, ENV_SIZE> map;
+struct Environment
+{
+private:
+  std::array<Tile *, ENV_SIZE> map;
+  std::array<float, ENV_SIZE> colonyActiveScent;
+  std::array<float, ENV_SIZE> colonyPassiveScent;
   void PopulateTiles(int seed);
 
- public:
-  Environment();                   // Generate rfandom Environment
-  Environment(unsigned int seed);  // Generate Environment from seed.
-  std::shared_ptr<ColonyTile> colony;
-  unsigned int round;
+public:
+  Environment();                  // Generate rfandom Environment
+  Environment(unsigned int seed); // Generate Environment from seed.
+  ColonyTile *colony;
+  unsigned int iteration = 0;
 
-  inline std::shared_ptr<Tile> get(const byte &x, const byte &y) {
+  inline Tile *&get(const byte &x, const byte &y)
+  {
     return map.at(x + y * ENV_SIDE);
   }
 
-  ACSData GetInput(const std::shared_ptr<Ant> &ant);
-  void EvaluateAction(OutputActions oa, const std::shared_ptr<Ant> &ant){};
+  inline Tile *&get(const std::pair<byte, byte> &P)
+  {
+    return map.at(P.first + P.second * ENV_SIDE);
+  }
+
+  // Get scents
+  byte getColonyScent(ScentTypes type, int x, int y);
+
+  ACSData GetInput(std::shared_ptr<Ant> &ant);
+  bool EvaluateAction(OutputActions oa, std::shared_ptr<Ant> &ant);
+
+  void ReleaseSmallScentC(std::shared_ptr<Ant> &);
+  void ReleaseLargeScentC(std::shared_ptr<Ant> &);
+
+  void Step();
 
   void Print();
 };

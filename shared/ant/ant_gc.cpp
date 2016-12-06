@@ -19,8 +19,8 @@ ANT_GC::ANT_GC(std::string input)
       PersonalPassiveScent_Decay(input[14]),
       PersonalActiveScentA_Decay(input[15]),
       PersonalActiveScentB_Decay(input[16]),
-      ColonyPassiveScent_Decay(input[17]),
-      ColonyActiveScent_Decay(input[18]),
+      ColonyPassiveScent_Decay(input[17]), //NOT USED
+      ColonyActiveScent_Decay(input[18]),  //NOT USED
       GiveFood_Amount(input[19]),
       TakeFood_Amount(input[20]),
       PersonalMemoryX_Delta(input[21]),

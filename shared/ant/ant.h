@@ -7,13 +7,15 @@
 
 // STL Includes
 #include <array>
+#include <list>
 #include <memory>
 #include <string>
-#include <list>
 #include <utility>
+#include <cstdio>
 
-struct ANT_GC {
- public:
+struct ANT_GC
+{
+public:
   ANT_GC(std::string input);
   const byte MyFood_Scale;
   const byte ColonyFood_Scale;
@@ -42,17 +44,13 @@ struct ANT_GC {
   const byte LargeScent_Delta;
 };
 
-class Ant {
+class Ant
+{
   friend Environment;
 
- private:
-  std::shared_ptr<AI> brain;
-
+public:
   // Alive
-  bool alive = 0;
-
-  // Position
-  std::pair<byte, byte> Pos;
+  bool alive = true;
 
   // Age
   const unsigned int creationTime = 0;
@@ -79,14 +77,36 @@ class Ant {
   float memory_static_c = 0;
   float memory_static_d = 0;
 
- public:
+  std::shared_ptr<AI> brain;
+
+  // Position
+  std::pair<byte, byte> Pos;
+  std::array<float, ENV_SIZE> PersonalScentA, PersonalScentB, PersonalScentP;
+
   Ant(std::shared_ptr<AI> ai, unsigned int startTime = 0);
   const std::unique_ptr<ANT_GC> GC;
   const unsigned int ID;
   OutputActions GetOutput(ACSData input);
+  bool EvaluateAction(OutputActions action, int iteration);
+  void ReflectAction(OutputActions action, bool success);
 
-  bool trySpendFood(unsigned int food);
-  bool tryRecieveFood(unsigned int food);
+  bool checkFoodDelta(int delta);
+  int registerFoodDelta(int delta);
+
+  std::shared_ptr<Ant> produceOffspring(std::shared_ptr<std::set<std::shared_ptr<Ant>, AntComparator>> parents, unsigned int iteration);
+
+  void Step();
 
   ACSData GetPersonalInput(unsigned int round);
+
+  // Generic Actions
+  void ReleaseSmallScentA();
+  void ReleaseLargeScentA();
+  void ReleaseSmallScentB();
+  void ReleaseLargeScentB();
+
+  void print(std::ostream &out)
+  {
+    out << "I: " << ID << " F: " << food_net << " FP: " << food_income << " FN: " << food_expense << std::endl;
+  }
 };

@@ -42,6 +42,7 @@ app.get('/api/users', function(req, res) {
   //res.json(req);
 });
 
+
 /**********************************************************************************************************************
                                           PUT operations
  *********************************************************************************************************************/
@@ -118,6 +119,24 @@ app.get('/api/create_environment', function (req, res) {
 app.get('/api/create_simulation', function (req, res) {
   pool.connect(function(err, client, done){
     db.create_simulation(err, client, done, req, res);
+  });
+  pool.on('error', function (err, client) {
+    console.error('idle client error', err.message, err.stack)
+  });
+});
+/**
+ * TODO: CREATE SIMULATION TABLE IN DATABASE
+ * TODO: GENERATION TABLE has INTEGER[] attributes
+ * Inserts into Temp Table
+ * Accepts the following api string format
+ *  api/temp?GS=(varchar)&Lifetime=(int)&Parents=(int)&Fitness=(double)
+ * Returns
+ *
+ */
+app.get('/api/temp', function (req, res) {
+  console.log(req.query);
+  pool.connect(function(err, client, done){
+    db.temp(err, client, done, req, res);
   });
   pool.on('error', function (err, client) {
     console.error('idle client error', err.message, err.stack)

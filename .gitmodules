@@ -1,3 +1,6 @@
 [submodule "shared/deps/FastNoise"]
 	path = shared/deps/FastNoise
 	url = https://github.com/Auburns/FastNoise.git
+[submodule "shared/deps/json"]
+	path = shared/deps/json
+	url = https://github.com/nlohmann/json.git

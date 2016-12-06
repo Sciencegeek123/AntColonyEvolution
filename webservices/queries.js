@@ -30,7 +30,6 @@ function create_experiment(err, client, done, req, res) {
             });
 }
 /**
- * TODO: GENERATION TABLE has INTEGER[] attributes (currently only takes a single integer req.parents)
  * Inserts into Generation Table
  * Accepts the following api string format
  *  api/create_generation?expID=(int)&parents=(int)&envs=(int)&genCM=(int)
@@ -42,13 +41,14 @@ function create_generation(err, client, done, req, res) {
         return console.error('error fetching client from pool', err);
     }
     var reqArr = [req.query.expID, req.query.parents, req.query.envs, req.query.genCM];
+    console.log(req.query);
     client
         .query('INSERT INTO "ACSchema"."Generation"( "Exp_ID", "Parents", "Environments", "Gen_CM") VALUES ($1, $2, $3, $4) RETURNING "Gen_ID"',
             reqArr,
             function(err, result) {
                 done();
                 if(err) {
-                    res.send('error running query');
+                    res.send('error running query' + err.detail);
                     return console.error('error running query', err);
                 } else {
                     console.log(result.rows);
@@ -69,7 +69,7 @@ function create_entity(err, client, done, req, res) {
     }
     var reqArr = [req.query.genBorn, req.query.genDied];
     client
-        .query('INSERT INTO "ACSchema"."Entity"( "Gen_Born", "Gen_Died") VALUES ($1, $2,) RETURNING "Ant_ID"',
+        .query('INSERT INTO "ACSchema"."Entity"( "Gen_Born", "Gen_Died") VALUES ($1, $2) RETURNING "Ant_ID"',
             reqArr,
             function(err, result) {
                 done();
@@ -145,6 +145,34 @@ function create_simulation(err, client, done, req, res) {
  * Returns
  *  Ant_ID
  */
+
+ /**
+  * Inserts into CreationMechanism Table
+  * Accepts the following api string format
+  *  api/create_mechanism?cmID=(int)&purpose=(string)
+  * Returns
+  *  CM_ID
+  */
+ function create_mechanism(err, client, done, req, res) {
+     if(err) {
+         return console.error('error fetching client from pool', err);
+     }
+     var reqArr = [req.query.cmID, req.query.purpose];
+     client
+         .query('INSERT INTO "ACSchema"."CreationMechanism"( "CM_ID", "Purpose") VALUES ($1, $2) RETURNING "CM_ID"',
+             reqArr,
+             function(err, result) {
+                 done();
+                 if(err) {
+                     res.send('error running query');
+                     return console.error('error running query', err);
+                 } else {
+                     console.log(result.rows);
+                     res.json(result.rows[0].CM_ID);
+                 }
+             });
+           }
+
 function temp(err, client, done, req, res) {
     if(err) {
         return console.error('error fetching client from pool', err);
@@ -201,7 +229,7 @@ function search(err, client, done, req, res) {
 
 
 function clientError(err, client) {
-    console.error('idle client error', err.message, err.stack)
+   console.error('idle client error', err.message, err.stack);
 }
 
 module.exports = {
@@ -210,6 +238,7 @@ module.exports = {
     create_entity: create_entity,
     create_environment: create_environment,
     create_simulation: create_simulation,
+    create_mechanism: create_mechanism,
     clientError: clientError,
     temp: temp,
     search: search

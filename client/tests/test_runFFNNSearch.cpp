@@ -34,11 +34,11 @@ void runFFNNSearch()
         sim->Report();
         cout.flush();
 
-        if (sim->IsOverThreshold())
+        if (true || sim->IsOverThreshold())
         {
             i++;
             cout << "!!! Found " << i << " FFNN over threshold." << endl;
-            sim->SubmitSearch();
+            utils::submitJSON(sim->GetJSON("FFNN_SEARCH"));
         }
     }
     cout << endl;

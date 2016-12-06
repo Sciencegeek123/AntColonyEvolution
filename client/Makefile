@@ -1,6 +1,7 @@
 # Declaration of variables
 CC = clang++
-CC_FLAGS =-std=c++14 -O3 -ffast-math -lboost_system -lboost_thread -I../shared/ -I./
+CC_FLAGS =-std=c++14 -O3 -ffast-math -I../shared/deps/ -I../shared/ -I./
+LN_FLAGS = -std=c++14 -O3 -ffast-math -lpthread -lboost_system -lboost_thread
 
 # File names
 EXEC = ./acs_client
@@ -53,7 +54,7 @@ super_dev:
 
 # Exec target
 $(EXEC): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(EXEC)
+	$(CC) $(LN_FLAGS) $(OBJECTS) -o $(EXEC)
  
 # To obtain object files 
 %.o: %.cpp

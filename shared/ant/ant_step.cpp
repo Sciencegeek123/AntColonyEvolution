@@ -2,7 +2,7 @@
 #include "utils/utils.h"
 using namespace std;
 
-void Ant::Step()
+void Ant::Step(unsigned int iteration)
 {
     if (memory_decaying_a != 0)
         memory_decaying_a -= memory_decaying_a > GC->PersonalDecayingMemoryA_Decay ? GC->PersonalDecayingMemoryA_Decay : memory_decaying_a;
@@ -32,4 +32,5 @@ void Ant::Step()
 
     if (food_net <= 0)
         alive = false;
+    deathTime = iteration;
 }

@@ -50,7 +50,7 @@ void Simulation::Run(int duration)
         ant->registerFoodDelta(-Settings.Action_FailedActionCost);
       }
       ant->ReflectAction(action, success);
-      ant->Step();
+      ant->Step(environment->iteration);
     }
     environment->Step();
   } while (duration-- > 0 && ants.size() > 0);
